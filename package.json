@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "nodemon": "^2.0.20",
+    "poe-log-monitor": "^1.2.6"
+  }
+}

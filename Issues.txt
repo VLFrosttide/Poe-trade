@@ -1,0 +1,3 @@
+Crashes when receiving a wrong msg - due to msg filtering. 
+
+Cant handle request value below base. 
