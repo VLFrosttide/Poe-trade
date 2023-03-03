@@ -1,8 +1,13 @@
 import pyautogui
+import sys
+import time
 
+t_end = time.time() + 300
 
-while 1:
-    if pyautogui.locateOnScreen("TradeRequest.png") !=None:
+while time.time() < t_end:
+    if pyautogui.locateOnScreen("Trade.png"):
         print("Found")
-    else:
-        print("NotThere")
+        sys.stdout.flush()
+        break
+
+

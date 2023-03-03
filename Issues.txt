@@ -1,3 +1,12 @@
-Crashes when receiving a wrong msg - due to msg filtering. 
+Crashes when receiving a wrong msg - due to msg filtering.  - fixed
+Cant handle request value below base. - fixed 
 
-Cant handle request value below base. 
+idea - calculate estimate inventory location and only click there. - fixed
+
+When to hover???????? Every X seconds? - fixed
+
+if trade fails, and player is still in area - retry the trade 
+
+send discord msg when this sht crashes. 
+
+Add new currencies
