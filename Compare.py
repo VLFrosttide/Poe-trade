@@ -90,7 +90,7 @@ if __name__ == "__main__":
     # Quant = 55
     # Name = "ChaosOrb"
 
-    result = scan_inventory(start_x,start_y,70,{Name:Quant},assets, True)
+    result = scan_inventory(start_x,start_y,70,{Name:Quant},assets)
     print(result)
     sys.stdout.flush()
 

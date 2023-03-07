@@ -8,4 +8,7 @@ time.sleep(0.2)
 
 pyautogui.write(f"/invite { name}")
 time.sleep(0.2)
-pyautogui.press("enter")                                   
+pyautogui.press("enter")  
+
+print("awd")                                 
+sys.stdout.flush()

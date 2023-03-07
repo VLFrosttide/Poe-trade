@@ -8,7 +8,6 @@ const PathOfExileLog = require("poe-log-monitor");
 const { rejects } = require("assert");
 const { resolve } = require("path");
 const { type } = require("os");
-let acorn = require("acorn");
 let Queue = [];
 
 let poeLog = new PathOfExileLog({
@@ -19,18 +18,26 @@ let poeLog = new PathOfExileLog({
 //#region Declarations
 let WhispName = "";
 let kolko;
+let Check = false;
+let mes = [];
+let namearray = [];
+let OfferQ = [];
+let RequestPoe = [];
+let Offer = [];
 let kolkoArr = [];
+let ComparePrice;
 let Remain;
 let GreenInterval;
 let OfferCurrencyType;
 let OfferQuant;
+let CurrencyMatch;
 let ReqCurrencyType;
 let PriceCheckCurrency = "Exalted Orb";
 let PriceData;
 let PriceDataArr = [];
 let CurrencyList = {
   Exalt: { name: "Exalted Orb", base: 10, price: 30 },
-  Divine_Orb: { name: "Divine Orb", base: 10, price: 275 },
+  Divine: { name: "Divine Orb", base: 10, price: 275 },
   Annul: { name: "Orb of Annulment", base: 20, price: 8 },
   Alt: { name: "Orb of Alteration", base: 20, price: 0.083 },
   Regal: { name: "Regal Orb", base: 10, price: 1 },
@@ -45,88 +52,94 @@ let CurrencyList = {
   Fusing: { name: "Orb of Fusing", base: 20, price: 1 },
   Regret: { name: "Orb of Regret", base: 40, price: 1 },
 };
-// console.log(CurrencyList.Alch);
+function FilterMsg() {
+  for (let i = 0; i < mes.length; i++) {
+    let split = mes[i].split("your");
+    namearray.push(split[1]);
+  }
+  for (let i = 0; i < namearray.length; i++) {
+    let split2 = namearray[i].split("for my");
+    RequestPoe.push(split2[0]);
+    Offer.push(split2[1]);
+  }
+  console.log(RequestPoe);
+
+  let ReqQuant = RequestPoe[0].match(/\d+/g);
+  CurrencyMatch = RequestPoe[0].replace(/\d+/g, "").trim();
+  ReqCurrencyType = RequestPoe[0].replace(/\d+/g, "").replace(/\s/g, "");
+
+  for (let i = 0; i < Offer.length; i++) {
+    let split3 = Offer[i].split("in");
+    OfferQ.push(split3[0]);
+  }
+
+  OfferCurrencyType = OfferQ[0].replace(/\d+/g, "").replace(/\s/g, "");
+
+  OfferQuant = OfferQ[0].match(/\d+/g);
+
+  for (const keys in CurrencyList) {
+    if (CurrencyList[keys]["name"] == CurrencyMatch) {
+      ComparePrice = CurrencyList[keys]["price"];
+    }
+  }
+  if (OfferQuant[0] / ReqQuant[0] >= ComparePrice - 2) {
+    Check = true;
+    const Invite = spawn("python", [
+      "C:/Users/shacx/Documents/GitHub/Poe-trade/Invite.py",
+      WhispName,
+    ]);
+    Invite.stdout.on("data", (data) => {
+      const FromStash = spawn("python3", [
+        "C:/Users/shacx/Documents/GitHub/Poe-trade/FromStash.py",
+        ReqQuant,
+        ReqCurrencyType,
+        OfferQuant,
+        OfferCurrencyType,
+        WhispName,
+      ]);
+      FromStash.stdout.on("data", (data) => {
+        kolko = data.toString();
+        kolkoArr.push(kolko);
+      });
+      FromStash.stderr.on("error", (error) => {
+        console.log(`std: ${error}`);
+      });
+    });
+  }
+}
 
 //#endregion
+// console.log(CurrencyList.Alch["price"]);
 
 poeLog.on("whisper", (whisper) => {
+  kolkoArr.length = 0;
+  mes.push(whisper.message);
+
   if (
     whisper.direction === "From" &&
     whisper.message.includes("like to buy") &&
     Queue.length == 0
   ) {
-    let mes = [];
-    let namearray = [];
-    let OfferQ = [];
-    let RequestPoe = [];
-    let Offer = [];
-    kolkoArr = [];
     Queue.push(whisper.player.name);
 
     WhispName = whisper.player.name;
-    const Invite = spawn("python", [
-      "C:/Users/shacx/Documents/GitHub/Poe-trade/Invite.py",
-      WhispName,
-    ]);
-    //#region SplitMsg
-    function FilterMsg() {
-      for (let i = 0; i < mes.length; i++) {
-        let split = mes[i].split("your");
-        namearray.push(split[1]);
-      }
-      for (let i = 0; i < namearray.length; i++) {
-        let split2 = namearray[i].split("for my");
-        RequestPoe.push(split2[0]);
-        Offer.push(split2[1]);
-      }
-      let ReqQuant = RequestPoe[0].match(/\d+/g);
-      ReqCurrencyType = RequestPoe[0].replace(/\d+/g, "").replace(/\s/g, "");
-      for (let i = 0; i < Offer.length; i++) {
-        let split3 = Offer[i].split("in");
-        OfferQ.push(split3[0]);
-      }
+    setTimeout(() => {
+      FilterMsg();
 
-      OfferCurrencyType = OfferQ[0].replace(/\d+/g, "").replace(/\s/g, "");
-
-      OfferQuant = OfferQ[0].match(/\d+/g);
-      console.log(OfferQuant / ReqQuant);
-      console.log(CurrencyList[ReqCurrencyType]["price"] - 2);
-      if (OfferQuant / ReqQuant >= CurrencyList[ReqCurrencyType]["price"] - 2) {
-        const FromStash = spawn("python3", [
-          "C:/Users/shacx/Documents/GitHub/Poe-trade/FromStash.py",
-          ReqQuant,
-          ReqCurrencyType,
-          OfferQuant,
-          OfferCurrencyType,
-          WhispName,
-        ]);
-        FromStash.stdout.on("data", (data) => {
-          kolko = data.toString();
-          kolkoArr.push(kolko);
-        });
-        FromStash.stderr.on("error", (error) => {
-          console.log(`std: ${error}`);
-        });
-
-        //#endregion
-      }
-      setTimeout(() => {
-        mes.push(whisper.message);
-        FilterMsg();
-        mes = [];
-        namearray = [];
-        OfferQ = [];
-        RequestPoe = [];
-        Offer = [];
-      }, 2000);
-    }
+      mes.length = 0;
+      namearray.length = 0;
+      OfferQ.length = 0;
+      RequestPoe.length = 0;
+      Offer.length = 0;
+      Queue.length = 0;
+    }, 1000);
   }
 });
 
 poeLog.on("areaJoin", (area) => {
   let PlayerName = area.player.name;
   let HowMuch;
-  if (WhispName == PlayerName) {
+  if (WhispName == PlayerName && Check == true) {
     HowMuch = kolkoArr[0].match(/\d+/g);
     for (let i = 0; i < kolkoArr.length; i++) {
       if (kolkoArr[i].includes("remain")) {
@@ -166,7 +179,6 @@ poeLog.on("areaJoin", (area) => {
       Green.stdout.on("data", (data) => {
         if (data.toString().includes("44")) {
           clearInterval(GreenInterval);
-          console.log(OfferQuant[0], OfferCurrencyType);
           const Hover = spawn("python3", [
             "C:/Users/shacx/Documents/GitHub/Poe-trade/Hover.py",
             OfferQuant[0],
@@ -174,19 +186,22 @@ poeLog.on("areaJoin", (area) => {
           ]);
 
           Hover.stdout.on("data", (data) => {
-            console.log(data.toString());
             const Compare = spawn("python3", [
               "C:/Users/shacx/Documents/GitHub/Poe-trade/Compare.py",
               OfferQuant[0],
               OfferCurrencyType,
             ]);
-            compare.stdout.on("data", (data) => {
+            Compare.stdout.on("data", (data) => {
               if (data.toString().includes("True")) {
                 setTimeout(() => {
                   const AcceptOffer = spawn("python3", [
                     "C:/Users/shacx/Documents/GitHub/Poe-trade/AcceptOffer.py",
                   ]);
                 }, 200);
+              } else {
+                const CancelOffer = spawn("python3", [
+                  "C:/Users/shacx/Documents/GitHub/Poe-trade/CancelOffer.py",
+                ]);
               }
             });
           });
@@ -197,6 +212,7 @@ poeLog.on("areaJoin", (area) => {
 });
 
 poeLog.on("trade", (trade) => {
+  Check == false;
   if (trade.accepted == false) {
     clearInterval(GreenInterval);
   }
@@ -230,7 +246,6 @@ setInterval(() => {
     for (const keys in CurrencyList) {
       CurrencyList[keys]["price"] = Str[CurrencyList[keys]["name"]].toFixed(2);
     }
-    console.log(CurrencyList);
   });
 }, 900000);
 
