@@ -4,7 +4,7 @@ import sys
 # sys.stdout.flush()
 # kolko = int(sys.argv[1])
 # Remainder = sys.argv[2]
-
+import time
 
 class Currency:
     def __init__(self, name, base, InventoryLocation):
@@ -230,7 +230,7 @@ def From_Inv_12():
     pyautogui.keyUp("ctrl")
 
 Function_List = [From_Inv_1, From_Inv_2, From_Inv_3,From_Inv_4,From_Inv_5,From_Inv_6,From_Inv_7,From_Inv_8,From_Inv_9,From_Inv_10,From_Inv_11,From_Inv_12]
-
+time.sleep(1)
 for i in range(0,Columns):
     Function_List[i]()
     CalcIndex +=1

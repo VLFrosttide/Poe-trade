@@ -10,3 +10,4 @@ if trade fails, and player is still in area - retry the trade
 send discord msg when this sht crashes. 
 
 Add new currencies
+/kick sys.argv[1]

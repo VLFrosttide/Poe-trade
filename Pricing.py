@@ -1,14 +1,18 @@
 import requests
 import json
 import sys
+import time
 
+
+SysArgv = "Essence"
+# sys.argv[1] = "Essence"
 # CurrencyType = sys.argv[1]
 
 CurrencyList = [
     "Exalted Orb", "Divine Orb", "Orb of Annulment", "Orb of Alteration",
     "Regal Orb", "Orb of Scouring", "Orb of Unmaking",
     "Ancient Orb","Veiled Chaos Orb","Vaal Orb", "Chromatic Orb","Awakened Sextant",
-    "Orb of Alchemy", "Orb of Fusing","Orb of Regret" 
+    "Orb of Alchemy", "Orb of Fusing","Orb of Regret", "Chaos Orb"
 ]
 
 
@@ -24,7 +28,7 @@ class POE:
         req_data = requests.get(url)
         self.json_data = req_data.json()
 
-    def get_all_essence_values(self, mapTier_thrushold=6):
+    def get_all_essence_values(self, mapTier_thrushold=7):
         result = {}
         for i in range(len(self.json_data['lines'])):
             if 'mapTier' not in self.json_data['lines'][i]:
@@ -34,7 +38,7 @@ class POE:
             chaosValue = self.json_data['lines'][i]['chaosValue']
             if mapTier < mapTier_thrushold:
                 continue
-            result[name] = {'mapTier':mapTier, 'chaosValue':chaosValue}
+            result[name] = chaosValue
         return result
 
 
@@ -73,11 +77,18 @@ class POE:
         if name in result:
             return result[name]
 
+if  __name__ == "__main__":
 
-a = POE("Sanctum", "Currency")
-# print(a.get_all_essence_values())
-# print(a.get_essence_value("Essence of Insanity"))
+    while True:
+        a = POE("Sanctum", sys.argv[1])
+        # print(a.get_all_essence_values())
+        # print(a.get_essence_value("Essence of Insanity"))
 
-# print( a.get_currency_value(f"{CurrencyType}"))
-print(a.MyList())
-sys.stdout.flush()
+        # print( a.get_currency_value(f"{CurrencyType}"))
+        if sys.argv[1] =="Currency":
+            print(a.MyList())
+
+        if sys.argv[1] == "Essence":
+            print(a.get_all_essence_values())
+        time.sleep(860)
+
