@@ -340,9 +340,9 @@ function GetCurrencyPrice() {
     ]);
   });
 }
-GetCurrencyPrice();
 
 function GetEssence() {
+  Queue.push("awd");
   const OpenEssenceTab = spawn("python3", [
     "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenEssenceTab.py",
   ]);
@@ -353,6 +353,12 @@ function GetEssence() {
   ]);
 
   UpdateEssencePrice.stdout.on("data", (data) => {
+    if (data.toString().includes("start")) {
+      Queue.push("awd");
+    }
+    if (data.toString().includes("finish")) {
+      Queue.length = 0;
+    }
     console.log(data.toString());
     const SetEssencePrice = spawn("python3", [
       "-u",
@@ -367,3 +373,8 @@ function GetEssence() {
 if (Queue.length == 0) {
   GetEssence();
 }
+setTimeout(() => {
+  if (Queue.length == 0) {
+    GetCurrencyPrice();
+  }
+}, 1000);
