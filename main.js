@@ -9,7 +9,6 @@ const { rejects } = require("assert");
 const { resolve } = require("path");
 const { type } = require("os");
 const { trace } = require("console");
-let Queue = [];
 
 let poeLog = new PathOfExileLog({
   logfile:
@@ -17,6 +16,7 @@ let poeLog = new PathOfExileLog({
   interval: 500,
 });
 //#region Declarations
+let Queue = [];
 let PlayerJoined = false;
 let WhispName = "";
 let kolko;
@@ -25,8 +25,6 @@ let PriceCheck = false;
 let mes = [];
 let namearray = [];
 let OfferQ = [];
-let EssenceNameArr = [];
-let EssencePriceArr = [];
 let CompareOffer;
 let RequestPoe = [];
 let Offer = [];
@@ -317,6 +315,9 @@ poeLog.on("trade", (trade) => {
 });
 
 function GetCurrencyPrice() {
+  const OpenCurrencyTab2 = spawn("python3", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenCurrencyTab.py",
+  ]);
   const GetPrices = spawn("python3", [
     "-u",
     "C:/Users/shacx/Documents/GitHub/Poe-trade/Pricing.py",
@@ -334,21 +335,24 @@ function GetCurrencyPrice() {
     for (const keys in CurrencyList) {
       CurrencyList[keys]["price"] = Str[CurrencyList[keys]["name"]].toFixed(2);
     }
+    const SetCurrencyPrices = spawn("python3", [
+      "C:/Users/shacx/Documents/GitHub/Poe-trade/SetCurrencyPrice.py",
+    ]);
   });
 }
 GetCurrencyPrice();
 
 function GetEssence() {
-  const GetEssencePrice = spawn("python3", [
+  const OpenEssenceTab = spawn("python3", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenEssenceTab.py",
+  ]);
+  const UpdateEssencePrice = spawn("python3", [
     "-u",
     "C:/Users/shacx/Documents/GitHub/Poe-trade/Pricing.py",
     "Essence",
   ]);
 
-  GetEssencePrice.stderr.on("error", (error) => {
-    console.log(error);
-  });
-  GetEssencePrice.stdout.on("data", (data) => {
+  UpdateEssencePrice.stdout.on("data", (data) => {
     console.log(data.toString());
     const SetEssencePrice = spawn("python3", [
       "-u",
@@ -360,4 +364,6 @@ function GetEssence() {
     });
   });
 }
-GetEssence();
+if (Queue.length == 0) {
+  GetEssence();
+}

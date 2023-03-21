@@ -2,6 +2,7 @@ import pyautogui
 import sys
 import time
 from pynput.mouse import Button, Controller
+from Essence import *
 
 mouse = Controller()
 
@@ -9,20 +10,6 @@ mouse = Controller()
 # pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0.1
 
-
-class Essence:
-    def __init__(self, name, base, StashLocation):
-        self.name = name
-        self.base = base
-        self.StashLocation = StashLocation
-
-EssenceList = [ Essence("DeafeningEssenceofGreed", 9, [80,244]),
-         Essence("DeafeningEssenceofContempt",9, [80,300]), Essence("DeafeningEssenceofHatred", 9, [80,365]), Essence ("DeafeningEssenceofWoe", 9, [80,434]), Essence("DeafeningEssenceofFear", 20, [80,508]),
-Essence("DeafeningEssenceofAnger",  9,[80,570]), Essence("DeafeningEssenceofTorment", 9, [80,635]), Essence("DeafeningEssenceofSorrow", 9, [80,690]), Essence("DeafeningEssenceofRage", 9,[80,760]),
-Essence("DeafeningEssenceofSuffering", 9, [80,830]), Essence("DeafeningEssenceofWrath",9,[80,900]), Essence("DeafeningEssenceofDoubt", 9,[80,960]), Essence("DeafeningEssenceofLoathing", 9, [790,240]),
-Essence("DeafeningEssenceofZeal",9,[790,300]), Essence("DeafeningEssenceofAnguish", 9,[790,365]), Essence("DeafeningEssenceofSpite", 9, [790,435]), Essence("DeafeningEssenceofScorn", 9, [790,500]), 
-Essence("DeafeningEssenceofEnvy", 9, [790,570]),Essence("DeafeningEssenceofMisery", 9, [790,633]),Essence("DeafeningEssenceofDread", 9, [790,690]),Essence("EssenceofInsanity", 9, [790,765]),
-Essence("EssenceofHorror", 9, [790,830]),Essence("EssenceofDelirium", 9, [790,890]),Essence("EssenceofHysteria", 9, [790,960]),]
 
 RequestEssenceQuant = int(sys.argv[1])
 RequestTypeEssence = None

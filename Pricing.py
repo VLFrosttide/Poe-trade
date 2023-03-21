@@ -80,6 +80,7 @@ class POE:
 if  __name__ == "__main__":
 
     while True:
+        time.sleep(1)
         a = POE("Sanctum", sys.argv[1])
         # print(a.get_all_essence_values())
         # print(a.get_essence_value("Essence of Insanity"))

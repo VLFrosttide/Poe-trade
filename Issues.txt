@@ -11,3 +11,9 @@ send discord msg when this sht crashes.
 
 Add new currencies
 /kick sys.argv[1]
+
+
+Locate stash on screen - if its opened - click essence and proceed, if not  -  open stash. 
+pass queue length to python. 
+
+pricing runs twice ?
