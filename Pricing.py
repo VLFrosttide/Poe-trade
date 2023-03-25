@@ -9,10 +9,22 @@ SysArgv = "Essence"
 # CurrencyType = sys.argv[1]
 
 CurrencyList = [
-    "Exalted Orb", "Divine Orb", "Orb of Annulment", "Orb of Alteration",
-    "Regal Orb", "Orb of Scouring", "Orb of Unmaking",
-    "Ancient Orb","Veiled Chaos Orb","Vaal Orb", "Chromatic Orb","Awakened Sextant",
-    "Orb of Alchemy", "Orb of Fusing","Orb of Regret", "Chaos Orb"
+    "Exalted Orb",
+    "Divine Orb",
+    ### "Orb of Annulment",
+    ####"Orb of Alteration",
+    #### "Ancient Orb",
+    #### "Orb of Fusing",
+    "Regal Orb", 
+    "Orb of Scouring",
+    "Orb of Unmaking",
+    "Veiled Chaos Orb",
+    "Vaal Orb",
+    "Chromatic Orb",
+    "Awakened Sextant",
+    "Orb of Alchemy",
+    "Orb of Regret",
+    "Chaos Orb"
 ]
 
 
@@ -79,8 +91,7 @@ class POE:
 
 if  __name__ == "__main__":
 
-    while True:
-        time.sleep(1)
+
         a = POE("Sanctum", sys.argv[1])
         # print(a.get_all_essence_values())
         # print(a.get_essence_value("Essence of Insanity"))
@@ -91,5 +102,5 @@ if  __name__ == "__main__":
 
         if sys.argv[1] == "Essence":
             print(a.get_all_essence_values())
-        time.sleep(860)
+
 

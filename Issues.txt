@@ -1,19 +1,6 @@
-Crashes when receiving a wrong msg - due to msg filtering.  - fixed
-Cant handle request value below base. - fixed 
-
-idea - calculate estimate inventory location and only click there. - fixed
-
-When to hover???????? Every X seconds? - fixed
-
-if trade fails, and player is still in area - retry the trade 
-
-send discord msg when this sht crashes. 
-
-Add new currencies
-/kick sys.argv[1]
 
 
-Locate stash on screen - if its opened - click essence and proceed, if not  -  open stash. 
-pass queue length to python. 
 
-pricing runs twice ?
+implement % tax 
+
+

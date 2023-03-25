@@ -3,12 +3,7 @@ import time
 import sys
 import Pricing
 from Essence import *
-import pyautogui
-import cv2
-import numpy as np
 
-values = sys.argv[1]
-values = list(map(float, values.split()))
 
 
 # EssenceList[0].price = 1
@@ -76,28 +71,24 @@ def SetPriceSecondHalf(args):
     
     
 
-image = pyautogui.screenshot()
-image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-image = image[0:1440, 0:2560]
-
 
 Clickthis = ()
 print("start")
-
+a = Pricing.POE("Sanctum", "Essence")
+a = a.get_all_essence_values()
 
 for i in range (len(EssenceList)):
-    if values[i] == 0:
-        continue   
-    sub = 33
-    cord = EssenceList[i].StashLocation
-    img = image[cord[1]-sub:cord[1]+sub, cord[0]-sub:cord[0]+sub]
-    if np.average(img) < 30:
-        continue
-   
-    Clickthis = (EssenceList[i].StashLocation,int(EssenceList[i].price))
-    # if (i<12):
-    #     SetPriceFirstHalf(Clickthis)
-    # else:
-    #     SetPriceSecondHalf(Clickthis)
-        
+    for j in a:
+        if EssenceList[i].name == j.replace(" ", ""): #and EssenceList[i].price != a[j]:
+            Clickthis = (EssenceList[i].StashLocation,int(a[j]))
+            if (i<12):
+                SetPriceFirstHalf(Clickthis)
+            else:
+                SetPriceSecondHalf(Clickthis)
+                
+            EssenceList[i].price = a[j]
 print("finish")                
+            
+
+    
+    

@@ -25,6 +25,5 @@ a = a.get_all_essence_values()
 for i in range (len(EssenceList)):
     for j in a:
         if EssenceList[i].name == j.replace(" ", ""):
-            # print(EssenceList[i].name, a[j])
             EssenceList[i].price = a[j]
-            # print(EssenceList[i])
+            # print(a[j])

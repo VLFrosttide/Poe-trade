@@ -13,3 +13,5 @@ except KeyboardInterrupt:
 print(pyautogui.pixel(430,630))
 
 
+#577,530 "sextant"
+#577,360 "regal" 
