@@ -1,13 +1,3 @@
-import pyautogui
-import time
-from Currency import *
 
-args = ([725,370] , 12)
-a = 270
-def ChaosOrb(args, args2):
-    pyautogui.write( f" 1/{args2}")
-CurrencyList[0].price = 270
-print(CurrencyList[0].price)
-ChaosOrb([725,370], CurrencyList[0].price)
-
-
+https://www.pathofexile.com/api/trade/fetch/80785c30616b02628d17edf514b89b6e8457dadaedbcf8c6ea7f262f6c7a42d4,5e93aeddadeadd236d553f949e7ab3ec051ff206e15f4b0ac2100cce5708bdf0,e329b4046b1771a5da1a322f6cb9c8176819b808dcf770da4ca3a5698230819c,878931adb79234b3f57ec9e8b032b63950ca4ee2b3a2795e91ea45610eb8bc7d?query=3nj98OGU5
+https://www.pathofexile.com/api/trade/fetch/ff81c54f9e700e6da8a84bee7ed43c6075158420e24f87edcbb4d1b1754fd031?query=3nj98OGU5

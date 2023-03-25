@@ -17,6 +17,7 @@ let poeLog = new PathOfExileLog({
 });
 //#region Declarations
 let Pricestr;
+let CurrencyPriceStr;
 let EssencePriceData;
 let Queue = [];
 let PlayerJoined = false;
@@ -342,11 +343,18 @@ function GetCurrencyPrice() {
       let Str = JSON.parse(PriceData);
 
       for (const keys in CurrencyList) {
+        if (CurrencyList[keys]["price"] == Str[CurrencyList[keys]["name"]]) {
+          CurrencyPriceStr = CurrencyPriceStr + "0 ";
+        } else {
+          CurrencyPriceStr = CurrencyPriceStr + "1 ";
+        }
+
         CurrencyList[keys]["price"] = Str[CurrencyList[keys]["name"]];
       }
       const SetCurrencyPrices = spawn("python3", [
         "C:/Users/shacx/Documents/GitHub/Poe-trade/SetCurrencyPrice.py",
         CurrencyList.Divine.price,
+        CurrencyPriceStr,
       ]);
       SetCurrencyPrices.stdout.on("data", (data) => {
         // console.log(data.toString());
@@ -370,7 +378,7 @@ function GetEssence() {
   UpdateEssencePrice.stdout.on("data", (data) => {
     EssencePriceData = data.toString().replaceAll("'", '"');
     let EssenceStr = JSON.parse(EssencePriceData);
-    let Pricestr = "";
+    Pricestr = "";
 
     for (const keys in EssenceList) {
       if (EssenceList[keys]["price"] == EssenceStr[EssenceList[keys]["name"]]) {

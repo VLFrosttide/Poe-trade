@@ -3,18 +3,18 @@ from Currency import *
 import sys
 import pyautogui
 import math
-import cv2
-
-
-values = sys.argv[2]
-values = list(map(float, values.split()))
-
-
 
 def round_up(n, decimals=0):
-    multiplier = 10 ** decimals
-    return math.ceil(n * multiplier) / multiplier
-
+    if n >= 1:
+        return round(n, 0)
+    else:
+        if n >=0.9:
+            return 1
+        else:
+            return round(n, 2)
+#     multiplier = 10 ** decimals
+#     return math.ceil(n * multiplier) / multiplier
+0.04
 def ChaosPrice(args):
     pyautogui.moveTo(args[0])
     pyautogui.rightClick(args[0])
@@ -60,7 +60,7 @@ def ChaosOrb(args):
     pyautogui.press("delete")
     pyautogui.press("delete")
 
-    pyautogui.write(f"1/{args[1]}")
+    pyautogui.write(f"1/{round(args[1])}")
 
     #Dropdown currency type
     pyautogui.moveTo(args[0][0] + 50, args[0][1]+105)   
@@ -77,21 +77,9 @@ def ChaosOrb(args):
 a = Pricing.POE("Sanctum", "Currency")
 a = a.MyList()
 
-image = pyautogui.screenshot()
-image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-image = image[0:1440, 0:2560]
-
 for i in range (len(CurrencyList)):
-    sub = 28
-    cord = CurrencyList[i].StashLocation
-    img = image[cord[1]-sub:cord[1]+sub, cord[0]-sub:cord[0]+sub]
-    if np.average(img) < 30:
-        continue
-
     for j in a:
-        if values[i] == 0:
-            continue
-        if CurrencyList[i].name == j.replace(" ", ""): 
+        if CurrencyList[i].name == j.replace(" ", ""):
             args = (CurrencyList[i].StashLocation, CurrencyList[i].price)
             ChaosPrice(args)
             CurrencyList[i].price = a[j]
