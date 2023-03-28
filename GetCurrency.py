@@ -19,8 +19,7 @@ for i in CurrencyList:
      
 
 kolko = int(RequestCurrency/RequestTypeCurrency.base)
-print(kolko)
-sys.stdout.flush()
+print(f"Clicks {kolko}")
 remain = RequestCurrency%RequestTypeCurrency.base 
 def Get_Currency():
     pyautogui.keyDown("ctrl")   

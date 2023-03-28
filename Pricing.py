@@ -93,10 +93,7 @@ if  __name__ == "__main__":
 
 
         a = POE("Sanctum", sys.argv[1])
-        # print(a.get_all_essence_values())
-        # print(a.get_essence_value("Essence of Insanity"))
-
-        # print( a.get_currency_value(f"{CurrencyType}"))
+     
         if sys.argv[1] =="Currency":
             print(a.MyList())
 

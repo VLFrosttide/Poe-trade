@@ -17,7 +17,7 @@ let poeLog = new PathOfExileLog({
 });
 //#region Declarations
 let Pricestr;
-let CurrencyPriceStr;
+let CurrencyPriceStr = "";
 let EssencePriceData;
 let Queue = [];
 let PlayerJoined = false;
@@ -136,11 +136,7 @@ function FilterMsg() {
       WhispName,
     ]);
     Invite.stdout.on("data", (data) => {
-      if (
-        //if currency
-        ReqCurrencyType.includes("Orb") ||
-        ReqCurrencyType.includes("Sex")
-      ) {
+      if (ReqCurrencyType.includes("Orb") || ReqCurrencyType.includes("Sex")) {
         const OpenCurrencyTab = spawn("python3", [
           "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenCurrencyTab.py",
         ]);
@@ -152,6 +148,14 @@ function FilterMsg() {
         GetCurrency.stdout.on("data", (data) => {
           kolko = data.toString();
           kolkoArr.push(kolko);
+          HowMuch = kolkoArr[0].match(/\d+/g);
+          for (let i = 0; i < kolkoArr.length; i++) {
+            if (kolkoArr[i].includes("remain")) {
+              Remain = "True";
+            } else {
+              Remain = "False";
+            }
+          }
         });
         GetCurrency.stderr.on("error", (error) => {
           console.log(`std: ${error}`);
@@ -188,7 +192,7 @@ function FilterMsg() {
 poeLog.on("whisper", (whisper) => {
   kolkoArr.length = 0;
   mes.push(whisper.message);
-
+  console.log(Queue.length);
   if (
     whisper.direction === "From" &&
     whisper.message.includes("like to buy") &&
@@ -206,7 +210,7 @@ poeLog.on("whisper", (whisper) => {
           Remain,
         ]);
       }
-    }, 15000);
+    }, 35000);
     setTimeout(() => {
       FilterMsg();
 
@@ -327,16 +331,15 @@ function GetCurrencyPrice() {
   ]);
   OpenCurrencyTab2.stdout.on("data", (data) => {
     console.log("Currency running");
-    // console.log(data.toString());
     const GetPrices = spawn("python3", [
       "-u",
       "C:/Users/shacx/Documents/GitHub/Poe-trade/Pricing.py",
       "Currency",
     ]);
-    const UpdateCurrencyPrice = spawn("python3", [
-      "-u",
-      "C:/Users/shacx/Documents/GitHub/Poe-trade/Currency.py",
-    ]);
+    // const UpdateCurrencyPrice = spawn("python3", [
+    //   "-u",
+    //   "C:/Users/shacx/Documents/GitHub/Poe-trade/Currency.py",
+    // ]);
 
     GetPrices.stdout.on("data", (data) => {
       PriceData = data.toString().replaceAll("'", '"');
@@ -348,7 +351,6 @@ function GetCurrencyPrice() {
         } else {
           CurrencyPriceStr = CurrencyPriceStr + "1 ";
         }
-
         CurrencyList[keys]["price"] = Str[CurrencyList[keys]["name"]];
       }
       const SetCurrencyPrices = spawn("python3", [
@@ -357,8 +359,8 @@ function GetCurrencyPrice() {
         CurrencyPriceStr,
       ]);
       SetCurrencyPrices.stdout.on("data", (data) => {
-        // console.log(data.toString());
         Queue.length = 0;
+        console.log(Queue.length);
       });
     });
   });
@@ -388,17 +390,12 @@ function GetEssence() {
       }
 
       EssenceList[keys]["price"] = EssenceStr[EssenceList[keys]["name"]];
-      // Pricestr = Pricestr + ` ${EssenceList[keys]["price"]}`;
     }
-    console.log(Pricestr);
     const SetEssencePrice = spawn("python3", [
       "-u",
       "C:/Users/shacx/Documents/GitHub/Poe-trade/SetEssencePrice.py",
       Pricestr,
     ]);
-    // SetEssencePrice.stderr.on("error", (error) => {
-    //   console.log(error);
-    // });
     SetEssencePrice.stdout.on("data", (data) => {
       console.log(data.toString());
       if (data.toString().includes("start")) {

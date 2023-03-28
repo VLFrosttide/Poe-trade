@@ -40,7 +40,6 @@ def ChaosPrice(args):
     
 args = ()
 def ChaosOrb(args):
-    print(args)
     pyautogui.moveTo(args[0])
     pyautogui.rightClick(args[0][0], args[0][1])
     pyautogui.moveTo(args[0][0] - 200, args[0][1]+110,0.2)
@@ -89,6 +88,8 @@ for i in range (len(CurrencyList)):
         continue
 
     for j in a:
+        print(args)
+
         if values[i] == 0:
             continue
         if CurrencyList[i].name == j.replace(" ", ""): 
