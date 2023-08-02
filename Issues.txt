@@ -4,3 +4,10 @@
 implement % tax 
 
 
+If undefined line 309 / 310
+
+Locking myself in trade forever. 
+
+line 253
+
+div price rounding in setcurrencyprice

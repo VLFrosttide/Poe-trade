@@ -1,96 +1,293 @@
-
-import utils
-import cv2
 import pyautogui
 from pynput.keyboard import Key, Listener
-import numpy as np
-import matplotlib.pylab as plt
-from multiprocessing import Pool
+import time
+import pyperclip
 import sys
+pyautogui.FAILSAFE = True 
+pyautogui.MINIMUM_SLEEP = 0
+pyautogui.MINIMUM_DURATION = 0.01
+
+def add_from_invetory():
+    pyautogui.keyDown("ctrl")
+    pyautogui.click(x=1720,y=810)
+    pyautogui.click(x=1720,y=880)
+    pyautogui.click(x=1720,y=940)
+    pyautogui.click(x=1720,y=1010)
+    pyautogui.click(x=1720,y=1080)
+##
+    pyautogui.click(x=1721,y=810)
+    pyautogui.click(x=1721,y=880)
+    pyautogui.click(x=1721,y=940)
+    pyautogui.click(x=1721,y=1010)
+    pyautogui.click(x=1721,y=1080)
+
+#    
+    pyautogui.click(x=1800,y=810)
+    pyautogui.click(x=1800,y=880)
+    pyautogui.click(x=1800,y=940)
+    pyautogui.click(x=1800,y=1010)
+    pyautogui.click(x=1800,y=1080)
+##
+    pyautogui.click(x=1801,y=810)
+    pyautogui.click(x=1801,y=880)
+    pyautogui.click(x=1801,y=940)
+    pyautogui.click(x=1801,y=1010)
+    pyautogui.click(x=1801,y=1080)
+
+#
+    pyautogui.click(x=1870,y=810)
+    pyautogui.click(x=1870,y=880)
+    pyautogui.click(x=1870,y=940)
+    pyautogui.click(x=1870,y=1010)
+    pyautogui.click(x=1870,y=1080)
+##
+    pyautogui.click(x=1871,y=810)
+    pyautogui.click(x=1871,y=880)
+    pyautogui.click(x=1871,y=940)
+    pyautogui.click(x=1871,y=1010)
+    pyautogui.click(x=1871,y=1080)
+#
+    pyautogui.click(x=1940,y=810)
+    pyautogui.click(x=1940,y=880)
+    pyautogui.click(x=1940,y=940)
+    pyautogui.click(x=1940,y=1010)
+    pyautogui.click(x=1940,y=1080)
+##
+    pyautogui.click(x=1941,y=810)
+    pyautogui.click(x=1941,y=880)
+    pyautogui.click(x=1941,y=940)
+    pyautogui.click(x=1941,y=1010)
+    pyautogui.click(x=1941,y=1080)
+#    
+    pyautogui.click(x=2010,y=810)
+    pyautogui.click(x=2010,y=880)
+    pyautogui.click(x=2010,y=940)
+    pyautogui.click(x=2010,y=1010)
+    pyautogui.click(x=2010,y=1080)
+##
+    pyautogui.click(x=2011,y=810)
+    pyautogui.click(x=2011,y=880)
+    pyautogui.click(x=2011,y=940)
+    pyautogui.click(x=2011,y=1010)
+    pyautogui.click(x=2011,y=1080)
+#
+    pyautogui.click(x=2080,y=810)
+    pyautogui.click(x=2080,y=880)
+    pyautogui.click(x=2080,y=940)
+    pyautogui.click(x=2080,y=1010)
+    pyautogui.click(x=2080,y=1080)
+#
+    pyautogui.click(x=2081,y=810)
+    pyautogui.click(x=2081,y=880)
+    pyautogui.click(x=2081,y=940)
+    pyautogui.click(x=2081,y=1010)
+    pyautogui.click(x=2081,y=1080)
+##
+    pyautogui.click(x=2150,y=810)
+    pyautogui.click(x=2150,y=880)
+    pyautogui.click(x=2150,y=940)
+    pyautogui.click(x=2150,y=1010)
+    pyautogui.click(x=2150,y=1080)
+##
+    pyautogui.click(x=2151,y=810)
+    pyautogui.click(x=2151,y=880)
+    pyautogui.click(x=2151,y=940)
+    pyautogui.click(x=2151,y=1010)
+    pyautogui.click(x=2151,y=1080)
+
+#
+    pyautogui.click(x=2220,y=810)
+    pyautogui.click(x=2220,y=880)
+    pyautogui.click(x=2220,y=940)
+    pyautogui.click(x=2220,y=1010)
+    pyautogui.click(x=2220,y=1080)
+##
+    pyautogui.click(x=2221,y=810)
+    pyautogui.click(x=2221,y=880)
+    pyautogui.click(x=2221,y=940)
+    pyautogui.click(x=2221,y=1010)
+    pyautogui.click(x=2221,y=1080)
+#
+    pyautogui.click(x=2290,y=810)
+    pyautogui.click(x=2290,y=880)
+    pyautogui.click(x=2290,y=940)
+    pyautogui.click(x=2290,y=1010)
+    pyautogui.click(x=2290,y=1080)
+##
+    pyautogui.click(x=2291,y=810)
+    pyautogui.click(x=2291,y=880)
+    pyautogui.click(x=2291,y=940)
+    pyautogui.click(x=2291,y=1010)
+    pyautogui.click(x=2291,y=1080)
+
+#
+    pyautogui.click(x=2360,y=810)
+    pyautogui.click(x=2360,y=880)
+    pyautogui.click(x=2360,y=940)
+    pyautogui.click(x=2360,y=1010)
+    pyautogui.click(x=2360,y=1080)
+##
+    pyautogui.click(x=2361,y=810)
+    pyautogui.click(x=2361,y=880)
+    pyautogui.click(x=2361,y=940)
+    pyautogui.click(x=2361,y=1010)
+    pyautogui.click(x=2361,y=1080)
+#
+    pyautogui.click(x=2430,y=810)
+    pyautogui.click(x=2430,y=880)
+    pyautogui.click(x=2430,y=940)
+    pyautogui.click(x=2430,y=1010)
+    pyautogui.click(x=2430,y=1080)
+##
+    pyautogui.click(x=2431,y=810)
+    pyautogui.click(x=2431,y=880)
+    pyautogui.click(x=2431,y=940)
+    pyautogui.click(x=2431,y=1010)
+    pyautogui.click(x=2431,y=1080)
+#
+    pyautogui.click(x=2500,y=810)
+    pyautogui.click(x=2500,y=880)
+    pyautogui.click(x=2500,y=940)
+    pyautogui.click(x=2500,y=1010)
+    pyautogui.click(x=2500,y=1080)
+##
+    pyautogui.click(x=2501,y=810)
+    pyautogui.click(x=2501,y=880)
+    pyautogui.click(x=2501,y=940)
+    pyautogui.click(x=2501,y=1010)
+    pyautogui.click(x=2501,y=1080)
 
 
-def get_col_info(image, start_x, start_y, add, col, assets):
-    count = {}
-    for row in range(5):
-        vertical = [start_y+add*row, start_y+add*(row+1)]
-        horizontal = [start_x+add*col, start_x+add*(col+1)]
 
-        cell_img = image[vertical[0]:vertical[1], horizontal[0]:horizontal[1]]
-
-        sim_img = utils.comparable(cell_img)
-        sim = utils.similar(sim_img, assets)
-        if sim == None:
-            continue
-        txt_img = cell_img[0:27, 0:40]
-        sim_str = sim[0]
+    #for i in range(5):
+     #   for j in range(12):
+    #        v = [start_y+add*i, start_y+add*(i+1)]
+   #         h = [start_x+add*j, start_x+add*(j+1)]
+  #          pyautogui.click((h[0]+h[1])//2, (v[0]+v[1])//2-10, duration=0.15)
+    pyautogui.keyUp("ctrl")
 
 
-        txt = utils.get_text(txt_img)
-        
-        txt_int = int(txt) if txt.isnumeric() else 1
-        count[sim_str] = count[sim_str] + txt_int if sim_str in count else txt_int
-
-    return count
-
-def save_inventory_png(start_x, start_y, add, image):
-    plt.figure(figsize=(15, 15))
-    count = 1
-    for j in range(12):
-        for i in range(5):
+def hover_traders(start_x, start_y, add):
+    for i in range(5):
+        for j in range(12):
             v = [start_y+add*i, start_y+add*(i+1)]
             h = [start_x+add*j, start_x+add*(j+1)]
-            img = image[v[0]:v[1], h[0]:h[1]]
-            ax = plt.subplot(10, 12, count)
-            plt.imshow(img)
-            plt.axis("off")
-            plt.tight_layout()
-            count += 1
-    plt.savefig("debug.png")
-    
-    
+            pyautogui.moveTo((h[0]+h[1])//2, (v[0]+v[1])//2-10, duration=0.0001)
 
-def scan_inventory(start_x, start_y, add, required, assets , debug=False):
-    image = pyautogui.screenshot()
-    image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
-    image = image[0:1440, 0:2560]
+
+def parse_clip(clip):
+    print(clip, "awdddddddddddddddddddd")
+    if len(clip) == 0:
+    
+        return None
+    lines = clip.split("\n")
+    item = lines[2].strip().replace(" ", "")
+    count = int(lines[4].replace("Stack Size: ", "").split("/")[0])
+
+    return {"item":item, "count":count}
+
+def green_check_pyautogui():
+    pix = pyautogui.pixel(1255,605)
+    return pix[1] == 44
+
+
+def scan_inventory(start_x, start_y, add, required, debug=False):
     final_count = {}
+    stop = False
+    pyperclip.copy("")
+    for i in range(12):
+        if stop:
+            break
+        for j in range(5):
+            v = [start_y+add*j, start_y+add*(j+1)]
+            h = [start_x+add*i, start_x+add*(i+1)]
+            pyautogui.moveTo((h[0]+h[1])//2, (v[0]+v[1])//2-10)
+            time.sleep(0.1)
+            pyautogui.click()
+            
+            while(pyperclip.paste()==""):
+                if debug: 
+                    print(f"clipboard empty!")
 
-    pool = Pool()
-    processes = []
-    for j in range(12):
-        process = pool.apply_async(get_col_info, [image, start_x, start_y, add, j, assets])
-        processes.append(process)
-
-    for process in processes:
-        result = process.get()
-        for item, count in result.items():
-            final_count[item] = final_count[item] + count if item in final_count else count
-
-    if debug:
-        print("DEBUG ON: Saving image 'debug.png'")
-        save_inventory_png(start_x, start_y, add, image)
-        print("Values Read from image: ")
-        for item, count in final_count.items():
-            print(f"'{item}': {count}")
-
+                greenDitected = green_check_pyautogui()
+                if greenDitected:
+                    if debug:
+                        print("Green detected")
+                    stop = True
+                    break
+                pyautogui.keyDown("ctrl")
+                pyautogui.press("c")
+                pyautogui.keyUp("ctrl")
+                time.sleep(0.1)
+            if stop:
+                break
+            clip_text = pyperclip.paste()
+            if debug: 
+                print(clip_text)
+            cell_data = parse_clip(clip_text)
+            if debug: 
+                print(f"({i}, {j}) -> {cell_data}")
+            pyperclip.copy("")
+            if cell_data["item"] in final_count:
+                final_count[cell_data["item"]] += cell_data["count"] 
+            else:
+                final_count[cell_data["item"]] = cell_data["count"]
     
+
+    if debug: 
+        print(f"Final Count data: {final_count}")
+
     intersection = dict(final_count.items() & required.items())
     if len(intersection) == len(required):
         return True
     else:
         return False
-if __name__ == "__main__":
+
+"""
+CurrencyType 
+Quant = 100
+
+
+
+"""
+
+def test_run():
+    def test(key):
+        if key == Key.f1:
+            #add_from_invetory()
+        #     traders_start_x = 416
+        #     traders_start_y = 273
+
+        #     add = 70
+        #    # hover_traders(traders_start_x, traders_start_y, 70)
+        #     required = {"ChaosOrb": 20}
+        #     data = scan_inventory(traders_start_x, traders_start_y, 70, required, True)
+        #     print(data)
+        
+            start_x = 416
+            start_y = 273
+            # Quant = int(sys.argv[1])
+            # Name = sys.argv[2]
+            Quant = 20
+            Name = "Chaos Orb"
+            
+            result = scan_inventory(start_x,start_y,70,{Name:Quant}, True)
+            print(result)
+            return False
     
-    assets = utils.Init_imgs("Currency")     
+        with Listener(on_press = test) as listener:  
+            listener.join()
+
+if __name__ == "__main__":
+    # test_run()
+    
     start_x = 416
     start_y = 273
     Quant = int(sys.argv[1])
     Name = sys.argv[2]
-    # Quant = 55
-    # Name = "ChaosOrb"
 
-    result = scan_inventory(start_x,start_y,70,{Name:Quant},assets)
+    
+    result = scan_inventory(start_x,start_y,70,{Name:Quant})
     print(result)
     sys.stdout.flush()
-

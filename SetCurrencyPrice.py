@@ -5,24 +5,25 @@ import pyautogui
 import math
 import cv2
 
-
+print( (sys.argv[1]))
 values = sys.argv[2]
 values = list(map(float, values.split()))
+Div =  float(sys.argv[1])
+DivinePrice = str(math.ceil(Div))
 
 
-
-def round_up(n, decimals=0):
+def round_up(n, decimals=1):
     multiplier = 10 ** decimals
     return math.ceil(n * multiplier) / multiplier
 
 def ChaosPrice(args):
     pyautogui.moveTo(args[0])
     pyautogui.rightClick(args[0])
-    pyautogui.moveTo(args[0][0] - 200, args[0][1]+110,0.2)
+    pyautogui.moveTo(args[0][0] - 200, args[0][1]+110)
     pyautogui.click(args[0][0] - 200, args[0][1]+110)
-    pyautogui.moveTo(args[0][0] - 225, args[0][1]+220,0.2)
+    pyautogui.moveTo(args[0][0] - 225, args[0][1]+220)
     pyautogui.click(args[0][0] - 225, args[0][1]+220)
-    pyautogui.moveTo(args[0][0] - 25, args[0][1]+125,0.2)
+    pyautogui.moveTo(args[0][0] - 25, args[0][1]+125)
     pyautogui.click(args[0][0] - 25, args[0][1]+125)
     pyautogui.press("backspace")
     pyautogui.press("backspace")
@@ -73,7 +74,7 @@ def ChaosOrb(args):
     # pyautogui.click(args[0][0] + 300, args[0][1]+165)
 
 
-a = Pricing.POE("Sanctum", "Currency")
+a = Pricing.POE("Crucible", "Currency")
 a = a.MyList()
 
 image = pyautogui.screenshot()
@@ -88,7 +89,6 @@ for i in range (len(CurrencyList)):
         continue
 
     for j in a:
-        print(args)
 
         if values[i] == 0:
             continue
@@ -99,5 +99,7 @@ for i in range (len(CurrencyList)):
 
 
 
-mf = ([725,370], sys.argv[1])
+mf = ([725,370], DivinePrice)
+print(DivinePrice)
+# print(sys.argv[1], math.ceil(sys.argv[1]))
 ChaosOrb(mf)           

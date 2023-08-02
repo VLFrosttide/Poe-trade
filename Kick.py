@@ -1,11 +1,8 @@
 import pyautogui
-import sys
 import time
-PlayerName = sys.argv[1]
+time.sleep(1)
 pyautogui.press("enter")
 time.sleep(0.5)
-pyautogui.write(f"/kick {PlayerName}")
+pyautogui.write("/leave")
 time.sleep(0.5)
 pyautogui.press("enter")
-print(sys.argv[1])
-sys.stdout.flush()

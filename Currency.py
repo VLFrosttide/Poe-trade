@@ -28,7 +28,7 @@ class Currency:
 
 CurrencyList = [
 
-            Currency("ChaosOrb", 10, [735, 368], "left"),
+            Currency("ChaosOrb", 20, [735, 368], "left"),
             Currency("DivineOrb", 10, [811, 445], "left"),
             Currency("OrbofAnnulment", 20, [228, 368], "right"),
             Currency("ExaltedOrb", 10, [404, 368], "mid"),
@@ -45,7 +45,7 @@ CurrencyList = [
             Currency("OrbofFusing", 20, [228, 537], "left"),
             Currency("OrbofRegret", 40, [582, 612], "mid")]
 
-a = Pricing.POE("Sanctum", "Currency")
+a = Pricing.POE("Crucible", "Currency")
 a = a.MyList()
 for i in range (len(CurrencyList)):
     for j in a:

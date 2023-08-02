@@ -6,6 +6,7 @@ from Essence import *
 import pyautogui
 import cv2
 import numpy as np
+import math
 
 values = sys.argv[1]
 values = list(map(float, values.split()))
@@ -94,10 +95,10 @@ for i in range (len(EssenceList)):
     if np.average(img) < 30:
         continue
    
-    Clickthis = (EssenceList[i].StashLocation,int(EssenceList[i].price))
-    # if (i<12):
-    #     SetPriceFirstHalf(Clickthis)
-    # else:
-    #     SetPriceSecondHalf(Clickthis)
+    Clickthis = (EssenceList[i].StashLocation,int(  math.ceil(EssenceList[i].price + 1)))
+    if (i<12):
+        SetPriceFirstHalf(Clickthis)
+    else:
+        SetPriceSecondHalf(Clickthis)
         
 print("finish")                

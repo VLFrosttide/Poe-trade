@@ -20,7 +20,7 @@ Essence("DeafeningEssenceofZeal",9,[790,300],1), Essence("DeafeningEssenceofAngu
 Essence("DeafeningEssenceofEnvy", 9, [790,570],1),Essence("DeafeningEssenceofMisery", 9, [790,633],1),Essence("DeafeningEssenceofDread", 9, [790,690],1),Essence("EssenceofInsanity", 9, [790,765],1),
 Essence("EssenceofHorror", 9, [790,830],1),Essence("EssenceofDelirium", 9, [790,890],1),Essence("EssenceofHysteria", 9, [790,960],1),]
 
-a = Pricing.POE("Sanctum", "Essence")
+a = Pricing.POE("Crucible", "Essence")
 a = a.get_all_essence_values()
 for i in range (len(EssenceList)):
     for j in a:

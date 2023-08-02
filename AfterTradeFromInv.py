@@ -12,7 +12,7 @@ class Currency:
         self.base = base
         self.InventoryLocation = InventoryLocation
 
-CurrencyList = [ Currency("ChaosOrb", 10, [725,370]),
+CurrencyList = [ Currency("ChaosOrb", 20, [725,370]),
          Currency("DivineOrb",10, [800,435]), Currency("OrbofAnnulment", 20, [225,365]), Currency ("ExaltedOrb", 10, [400,360]), Currency("OrbofAlteration", 20, [150,360]),
 Currency("RegalOrb",  10,[580,535]), Currency("Jeweller'sOrb", 20, [150,525]), Currency("OrbofScouring", 30, [580,685]), Currency("OrbofUnmaking", 40,[660,600]),
 Currency("AncientOrb", 20, [140,600]), Currency("VeiledChaosOrb",10,[810,370]), Currency("VaalOrb", 10,[810,690]), Currency("ChromaticOrb", 20, [300,535]),

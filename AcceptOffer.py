@@ -1,5 +1,5 @@
 import pyautogui
 
-pyautogui.click(500, 1111)
+pyautogui.moveTo(500, 1111)
 pyautogui.click(500, 1111)
 

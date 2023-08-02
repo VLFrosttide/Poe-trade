@@ -92,7 +92,7 @@ class POE:
 if  __name__ == "__main__":
 
 
-        a = POE("Sanctum", sys.argv[1])
+        a = POE("Crucible", sys.argv[1])
      
         if sys.argv[1] =="Currency":
             print(a.MyList())
