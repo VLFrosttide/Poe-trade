@@ -1,5 +1,6 @@
 import pyautogui
 import sys
+from Currency import CurrencyList
 def Hover_1():
     pyautogui.moveTo(445,300)
     pyautogui.moveTo(445,590,duration=0.6)
@@ -51,18 +52,6 @@ def Hover_12():
 
 Function_List = [Hover_1,Hover_2,Hover_3,Hover_4,Hover_5,Hover_6,Hover_7,Hover_8,Hover_9,Hover_10,Hover_11,Hover_12]
 
-class Currency:
-    def __init__(self, name, base, InventoryLocation):
-        self.name = name
-        self.base = base
-        self.InventoryLocation = InventoryLocation
-
-CurrencyList = [ Currency("ChaosOrb", 10, [725,370]),
-         Currency("DivineOrb",10, [800,435]), Currency("OrbofAnnulment", 20, [225,365]), Currency ("ExaltedOrb", 10, [400,360]), Currency("OrbofAlteration", 20, [150,360]),
-Currency("RegalOrb",  10,[580,535]), Currency("Jeweller'sOrb", 20, [150,525]), Currency("OrbofScouring", 30, [580,685]), Currency("OrbofUnmaking", 40,[660,600]),
-Currency("AncientOrb", 20, [140,600]), Currency("VeiledChaosOrb",10,[810,370]), Currency("VaalOrb", 10,[810,690]), Currency("ChromaticOrb", 20, [300,535]),
-Currency("SacredOrb",10,[650,685]), Currency("AwakenedSextant", 10,[575,535]), Currency("OrbofAlchemy", 10, [650,365]), Currency("OrbofFusing", 20, [225,530]), 
-Currency("OrbofRegret", 40, [585,605])]
 
 OfferCurrencyQuant = int(sys.argv[1])
 OfferCurrencyType = None

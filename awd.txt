@@ -1,3 +1,26 @@
-x650 y50
-135
-350
+Item Class: Wands
+Rarity: Magic
+Scorching Imbued Wand of Zapping
+--------
+Wand
+Physical Damage: 29-53
+Elemental Damage: 44-84 (augmented)
+Critical Strike Chance: 7.00%
+Attacks per Second: 1.61 (augmented)
+--------
+Requirements:
+Level: 59
+Int: 188
+--------
+Sockets: G-B 
+--------
+Item Level: 70
+--------
+45% increased Spell Damage (implicit)
+--------
+Adds 41 to 78 Fire Damage
+15% chance to Shock
+--------
+25% increased Implicit Modifier magnitudes (crucible)
+Adds 3 to 6 Fire Damage (crucible)
+7% increased Attack Speed (crucible)

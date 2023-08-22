@@ -3,6 +3,8 @@ from pynput.keyboard import Key, Listener
 import time
 import pyperclip
 import sys
+import math
+from Currency import CurrencyList
 pyautogui.FAILSAFE = True 
 pyautogui.MINIMUM_SLEEP = 0
 pyautogui.MINIMUM_DURATION = 0.01
@@ -164,7 +166,7 @@ def add_from_invetory():
     #        v = [start_y+add*i, start_y+add*(i+1)]
    #         h = [start_x+add*j, start_x+add*(j+1)]
   #          pyautogui.click((h[0]+h[1])//2, (v[0]+v[1])//2-10, duration=0.15)
-    pyautogui.keyUp("ctrl")
+    # pyautogui.keyUp("ctrl")
 
 
 def hover_traders(start_x, start_y, add):
@@ -193,6 +195,11 @@ def green_check_pyautogui():
 
 
 def scan_inventory(start_x, start_y, add, required, debug=False):
+    name, stash = next(iter(required.items()))
+    for i in CurrencyList:
+        if i.name == name:
+            cell_count = math.ceil(stash/i.base)
+
     final_count = {}
     stop = False
     pyperclip.copy("")
@@ -200,6 +207,7 @@ def scan_inventory(start_x, start_y, add, required, debug=False):
         if stop:
             break
         for j in range(5):
+            cell_count -= 1
             v = [start_y+add*j, start_y+add*(j+1)]
             h = [start_x+add*i, start_x+add*(i+1)]
             pyautogui.moveTo((h[0]+h[1])//2, (v[0]+v[1])//2-10)
@@ -210,8 +218,8 @@ def scan_inventory(start_x, start_y, add, required, debug=False):
                 if debug: 
                     print(f"clipboard empty!")
 
-                greenDitected = green_check_pyautogui()
-                if greenDitected:
+                greenDetected = green_check_pyautogui()
+                if greenDetected and cell_count <=0:
                     if debug:
                         print("Green detected")
                     stop = True
@@ -227,7 +235,9 @@ def scan_inventory(start_x, start_y, add, required, debug=False):
                 print(clip_text)
             cell_data = parse_clip(clip_text)
             if debug: 
-                print(f"({i}, {j}) -> {cell_data}")
+                print(f"\n({i}, {j}) -> {cell_data}")
+                print(f"Remaining Cell count --> {cell_count}\n")
+
             pyperclip.copy("")
             if cell_data["item"] in final_count:
                 final_count[cell_data["item"]] += cell_data["count"] 
@@ -255,20 +265,9 @@ Quant = 100
 def test_run():
     def test(key):
         if key == Key.f1:
-            #add_from_invetory()
-        #     traders_start_x = 416
-        #     traders_start_y = 273
-
-        #     add = 70
-        #    # hover_traders(traders_start_x, traders_start_y, 70)
-        #     required = {"ChaosOrb": 20}
-        #     data = scan_inventory(traders_start_x, traders_start_y, 70, required, True)
-        #     print(data)
         
             start_x = 416
             start_y = 273
-            # Quant = int(sys.argv[1])
-            # Name = sys.argv[2]
             Quant = 20
             Name = "Chaos Orb"
             
@@ -289,5 +288,4 @@ if __name__ == "__main__":
 
     
     result = scan_inventory(start_x,start_y,70,{Name:Quant})
-    print(result)
-    sys.stdout.flush()
+    print(result, flush=True)

@@ -10,8 +10,8 @@ mouse = Controller()
 # pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0.1
 
-# RequestCurrencyQuant = int(sys.argv[1])
-RequestCurrencyQuant = 1
+RequestCurrencyQuant = int(sys.argv[1])
+# RequestCurrencyQuant = 1
 RequestTypeCurrency = None
 for i in CurrencyList:
     if i.name == sys.argv[2]:
@@ -41,8 +41,7 @@ def Get_Remaining(remain):
     pyautogui.click(x=2505, y=1100)
 
 if RequestCurrencyQuant<=RequestTypeCurrency.base:
-    print("remain")
-    sys.stdout.flush()
+    print("remain", flush=True)
     pyautogui.keyDown("shift")   
     pyautogui.moveTo(x=RequestTypeCurrency.StashLocation[0],y=RequestTypeCurrency.StashLocation[1]
                      
@@ -69,8 +68,7 @@ if RequestCurrencyQuant>RequestTypeCurrency.base:
 if remain != 0 and RequestCurrencyQuant>RequestTypeCurrency.base:
     #time.sleep(1)
     Get_Remaining(remain)
-    print("remain")
-    sys.stdout.flush()
+    print("remain",flush=True)
 
 
     

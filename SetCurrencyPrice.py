@@ -74,7 +74,7 @@ def ChaosOrb(args):
     # pyautogui.click(args[0][0] + 300, args[0][1]+165)
 
 
-a = Pricing.POE("Crucible", "Currency")
+a = Pricing.POE("Ancestor", "Currency")
 a = a.MyList()
 
 image = pyautogui.screenshot()

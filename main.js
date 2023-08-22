@@ -6,24 +6,27 @@ const { rejects } = require("assert");
 const { resolve } = require("path");
 const { type } = require("os");
 const { trace, error } = require("console");
+const { Invite } = require("discord.js");
+const CurrencyList = require("C:/Users/shacx/Documents/GitHub/Poe-trade/JSDB/DB");
 
+console.log(CurrencyList);
 // robot.mouseClick();
 
 let poeLog = new PathOfExileLog({
-  logfile:
-    "C:/Program Files (x86)/Grinding Gear Games/Path of Exile/logs/client.txt",
+  logfile: "D:/logs/client.txt",
   interval: 500,
 });
-//#region Declarations
+//#region Variable Declarations
 
 let Pricestr;
 let CurrencyPriceStr = "";
 let EssencePriceData;
+let ReqQuant;
 let Queue = [];
 let PlayerJoined = false;
 let WhispName = "";
 let kolko;
-let HowMuch;
+let NumberOfClicks;
 let PriceCheck = false;
 let mes = [];
 let namearray = [];
@@ -40,23 +43,77 @@ let OfferQuant;
 let CurrencyMatch = "";
 let ReqCurrencyType;
 let PriceData;
-let CurrencyList = {
-  Exalt: { name: "Exalted Orb", base: 10, price: 30 },
-  Divine: { name: "Divine Orb", base: 10, price: 275 },
-  Annul: { name: "Orb of Annulment", base: 20, price: 8 },
-  Alt: { name: "Orb of Alteration", base: 20, price: 0.083 },
-  Regal: { name: "Regal Orb", base: 10, price: 1 },
-  Scour: { name: "Orb of Scouring", base: 30, price: 1 },
-  Unmaking: { name: "Orb of Unmaking", base: 40, price: 1 },
-  AncientOrb: { name: "Ancient Orb", base: 20, price: 1 },
-  VeiledChaos: { name: "Veiled Chaos Orb", base: 10, price: 1 },
-  VaalOrb: { name: "Vaal Orb", base: 10, price: 1 },
-  Chromatic: { name: "Chromatic Orb", base: 20, price: 1 },
-  Sextant: { name: "Awakened Sextant", base: 10, price: 1 },
-  Alch: { name: "Orb of Alchemy", base: 10, price: 1 },
-  Fusing: { name: "Orb of Fusing", base: 20, price: 1 },
-  Regret: { name: "Orb of Regret", base: 40, price: 1 },
-};
+//#endregion
+//#region Child Process Declarations
+function FromInventory(Quant, Type) {
+  const FromInv = spawn("python", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/FromInventory.py",
+    Quant,
+    Type,
+  ]);
+  const FromInventoryOnStdout = (callback) =>
+    FromInv.stdout.on("data", callback);
+  const FromInventoryOnStderr = (callback) =>
+    FromInv.stderr.on("data", callback);
+  const FromInventoryOnClose = (callback) => FromInv.on("close", callback);
+
+  return {
+    FromInv,
+    FromInventoryOnStdout,
+    FromInventoryOnStderr,
+    FromInventoryOnClose,
+  };
+}
+function TradeInvite(Name) {
+  const Invite = spawn("python", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/TradeRequest.py",
+    Name,
+  ]);
+  const InviteOnStdOut = (callback) => {
+    Invite.stdout.on("data", callback);
+  };
+  return { Invite, InviteOnStdOut };
+}
+
+function TradeIdentification() {
+  const TradeId = spawn("python", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/TradeIdentifier.py",
+  ]);
+  const TradeIdOnStdOut = (callback) => {
+    TradeId.stdout.on("data", callback);
+  };
+  return { TradeId, TradeIdOnStdOut };
+}
+function CompareCurrency(Quant, Type) {
+  const Compare = spawn("python", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/Compare.py",
+    Quant,
+    Type.replace(/\s/g, ""),
+  ]);
+  const CompareStdout = (callback) => Compare.stdout.on("data", callback);
+  const CompareStderr = (callback) => Compare.stderr.on("err", callback);
+  return { Compare, CompareStdout, CompareStderr };
+}
+//#endregion
+//#region Lists
+// let CurrencyList = {
+//   Exalt: { name: "Exalted Orb", base: 10, price: 30 },
+//   Divine: { name: "Divine Orb", base: 10, price: 275 },
+//   Annul: { name: "Orb of Annulment", base: 20, price: 8 },
+//   Alt: { name: "Orb of Alteration", base: 20, price: 0.083 },
+//   Regal: { name: "Regal Orb", base: 10, price: 1 },
+//   Scour: { name: "Orb of Scouring", base: 30, price: 1 },
+//   Unmaking: { name: "Orb of Unmaking", base: 40, price: 1 },
+//   AncientOrb: { name: "Ancient Orb", base: 20, price: 1 },
+//   VeiledChaos: { name: "Veiled Chaos Orb", base: 10, price: 1 },
+//   VaalOrb: { name: "Vaal Orb", base: 10, price: 1 },
+//   Chromatic: { name: "Chromatic Orb", base: 20, price: 1 },
+//   Sextant: { name: "Awakened Sextant", base: 10, price: 1 },
+//   Alch: { name: "Orb of Alchemy", base: 10, price: 1 },
+//   Fusing: { name: "Orb of Fusing", base: 20, price: 1 },
+//   Regret: { name: "Orb of Regret", base: 40, price: 1 },
+// };
+
 let EssenceList = {
   Greed: { name: "Deafening Essence of Greed", price: 1 },
   Contempt: { name: "Deafening Essence of Contempt", price: 1 },
@@ -88,7 +145,7 @@ let LifeforceList = {
   Vivid: { name: "Vivid Crystallised Lifeforce", price: 1 / 65 },
   Primal: { name: "Primal Crystallised Lifeforce", price: 1 / 65 },
 };
-
+//#endregion
 function FilterMsg() {
   for (let i = 0; i < mes.length; i++) {
     let split = mes[i].split("your");
@@ -101,7 +158,7 @@ function FilterMsg() {
     Offer.push(split2[1]);
   }
 
-  let ReqQuant = RequestPoe[0].match(/\d+/g);
+  ReqQuant = RequestPoe[0].match(/\d+/g);
   CurrencyMatch = RequestPoe[0].replace(/\d+/g, "").trim();
   ReqCurrencyType = RequestPoe[0].replace(/\d+/g, "").replace(/\s/g, "");
   for (let i = 0; i < Offer.length; i++) {
@@ -163,9 +220,13 @@ function FilterMsg() {
       ]);
       GetCurrency.stdout.on("data", (data) => {
         console.log(data.toString());
+        // kolko = RequestCurrencyQuant/RequestTypeCurrency.base
         kolko = data.toString();
         kolkoArr.push(kolko);
-        HowMuch = kolkoArr[0].match(/\d+/g);
+        NumberOfClicks = kolkoArr[0].match(/\d+/g);
+        console.log("This is NumberOfClicks: ", NumberOfClicks);
+        console.log("This is kolko: ", kolko);
+        console.log("This is KolkoArr: ", kolkoArr);
         for (let i = 0; i < kolkoArr.length; i++) {
           if (kolkoArr[i].includes("remain")) {
             Remain = "True";
@@ -196,7 +257,7 @@ function FilterMsg() {
       LoadEssence.stdout.on("data", (data) => {
         kolko = data.toString();
         kolkoArr.push(kolko);
-        HowMuch = kolkoArr[0].match(/\d+/g);
+        NumberOfClicks = kolkoArr[0].match(/\d+/g);
         for (let i = 0; i < kolkoArr.length; i++) {
           if (kolkoArr[i].includes("remain")) {
             Remain = "True";
@@ -212,19 +273,21 @@ function FilterMsg() {
       const OpenLifeforceTab = spawn("python", [
         "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenLifeforceTab.py",
       ]);
-      setTimeout(() => {
+      OpenLifeforceTab.stdout.on("data", (data) => {
+        console.log(data.toString());
+        console.log("Currency type: ", ReqCurrencyType);
         const GetLifeforce = spawn("python", [
           "C:/Users/shacx/Documents/GitHub/Poe-trade/GetLifeforce.py",
           ReqQuant,
           ReqCurrencyType,
         ]);
-      }, 1000);
-      GetLifeforce.stdout.on("data", (data) => {
-        console.log(data.toString());
-        Remain = true;
-        HowMuch = 0;
+
+        GetLifeforce.stdout.on("data", (data) => {
+          console.log(data.toString());
+          Remain = true;
+          NumberOfClicks = 0;
+        });
       });
-      console.log(ReqCurrencyType, ReqQuant);
       Queue.length == 0;
       console.log("Queue length:", Queue.length);
     }
@@ -232,16 +295,6 @@ function FilterMsg() {
   });
 }
 
-//#endregion
-//#region Spawn Function Declarations
-function FromInventory(HowMuch, Remain) {
-  return spawn("python", [
-    "C:/Users/shacx/Documents/GitHub/Poe-trade/FromInventory.py",
-    HowMuch,
-    Remain,
-  ]);
-}
-//#endregion
 poeLog.on("whisper", (whisper) => {
   // console.log(whisper.message, Offer);
   kolkoArr.length = 0;
@@ -263,7 +316,7 @@ poeLog.on("whisper", (whisper) => {
     setTimeout(() => {
       if (PlayerJoined == false) {
         Queue.length = 0;
-        FromInventory(HowMuch, Remain);
+        FromInventory(ReqQuant, ReqCurrencyType);
       }
     }, 45000);
     //#endregion
@@ -287,47 +340,85 @@ poeLog.on("areaJoin", (area) => {
   if (WhispName == PlayerName && PlayerJoined == true) {
     //Send a trade request
     setTimeout(() => {
-      const TradeRequest = spawn("python", [
-        "C:/Users/shacx/Documents/GitHub/Poe-trade/TradeRequest.py",
-        PlayerName,
-      ]);
+      TradeInvite(PlayerName);
     }, 1500);
     // Identify if the trade window is opened
-    const TradeId = spawn("python", [
-      "C:/Users/shacx/Documents/GitHub/Poe-trade/TradeIdentifier.py",
-    ]);
+    const TradeIder = TradeIdentification(PlayerName);
 
-    //If its opened , send items from inventory to the trade window.
-    TradeId.stdout.on("data", (data) => {
+    TradeIder.TradeIdOnStdOut((data) => {
       console.log("Trade identifier: ", data.toString());
       if (data.toString().trim() == "Found") {
-        FromInventory(HowMuch, Remain);
+        const InvProcess = FromInventory(ReqQuant, ReqCurrencyType);
+        InvProcess.FromInventoryOnStdout((data) => {
+          const CompareFinish = CompareCurrency(
+            CompareOfferQuant,
+            OfferCurrencyType
+          );
+          console.log(data.toString());
+          console.log("This is CompareOfferQuant: ", CompareOfferQuant);
+          console.log("This is OfferCurrencyType: ", OfferCurrencyType);
+          CompareFinish.CompareStdout((data) => {
+            console.log("From Compare: ", data.toString());
+            if (data.toString().includes("True")) {
+              setTimeout(() => {
+                const AcceptOffer = spawn("python", [
+                  "C:/Users/shacx/Documents/GitHub/Poe-trade/AcceptOffer.py",
+                ]);
+              }, 200);
+
+              // Otherwise cancel the offer
+            } else {
+              const CancelOffer = spawn("python", [
+                "C:/Users/shacx/Documents/GitHub/Poe-trade/CancelOffer.py",
+              ]);
+            }
+          });
+          CompareFinish.CompareStderr((err) => {
+            console.log("Compare Error: ", err.toString());
+          });
+        });
+        InvProcess.FromInventoryOnStderr((err) => {
+          console.log("FromInventory error: ", err.toString());
+        });
       }
     });
 
-    const Compare = spawn("python", [
-      "C:/Users/shacx/Documents/GitHub/Poe-trade/Compare.py",
-      CompareOfferQuant,
-      OfferCurrencyType.replace(/\s/g, ""),
-    ]);
+    // TradeIdentification.InviteOnStdOut((data) => {
+
+    //   Tradeid.TradeIdOnStdOut((data) => {-p
+
+    //     }
+    //   });
+    // });
+
+    //If its opened , send items from inventory to the trade window.
+    // TradeId.stdout.on("data", (data) => {});
+    //#region Useless code
+    // const Compare = spawn("python", [
+    //   "C:/Users/shacx/Documents/GitHub/Poe-trade/Compare.py",
+    //   CompareOfferQuant,
+    //   OfferCurrencyType.replace(/\s/g, ""),
+    // ]);
 
     // If comparison is true , accept the offer
-    Compare.stdout.on("data", (data) => {
-      console.log("Compare data:" + data.toString());
-      if (data.toString().includes("True")) {
-        setTimeout(() => {
-          const AcceptOffer = spawn("python", [
-            "C:/Users/shacx/Documents/GitHub/Poe-trade/AcceptOffer.py",
-          ]);
-        }, 200);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Compare.stdout.on("data", (data) => {
+    //   console.log("Compare data:" + data.toString());
+    //   if (data.toString().includes("True")) {
+    //     setTimeout(() => {
+    //       const AcceptOffer = spawn("python", [
+    //         "C:/Users/shacx/Documents/GitHub/Poe-trade/AcceptOffer.py",
+    //       ]);
+    //     }, 200);
 
-        // Otherwise cancel the offer
-      } else {
-        const CancelOffer = spawn("python", [
-          "C:/Users/shacx/Documents/GitHub/Poe-trade/CancelOffer.py",
-        ]);
-      }
-    });
+    //     // Otherwise cancel the offer
+    //   } else {
+    //     const CancelOffer = spawn("python", [
+    //       "C:/Users/shacx/Documents/GitHub/Poe-trade/CancelOffer.py",
+    //     ]);
+    //   }
+    // });
+    //#endregion
   }
 });
 
@@ -347,22 +438,24 @@ poeLog.on("trade", (trade) => {
     ]);
     setTimeout(() => {
       const Dump = spawn("python", [
-        "C:/Users/shacx/Documents/GitHub/Poe-trade/AfterTradeFromInv.py",
+        "C:/Users/shacx/Documents/GitHub/Poe-trade/FromInventory.py",
         OfferQuant,
         OfferCurrencyType,
       ]);
-    }, 2000);
+    }, 3000);
     setTimeout(() => {
       const Kick = spawn("python", [
         "C:/Users/shacx/Documents/GitHub/Poe-trade/Kick.py",
         WhispName,
       ]);
+
       Queue.length = 0;
       console.log("Queue length:", Queue.length);
-    }, 5500);
+    }, 6500);
   }
 });
 
+//#region  Price Updates
 function GetCurrencyPrice() {
   const OpenCurrencyTab2 = spawn("python", [
     "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenCurrencyTab.py",
@@ -461,10 +554,11 @@ function GetEssence() {
     });
   });
 }
-
 // GetEssence();
 // GetCurrencyPrice();
 
 // setInterval(() => {
 //   GetEssence();
 // }, 600000);
+
+//#endregion

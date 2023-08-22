@@ -2,12 +2,8 @@ import pyautogui
 import sys
 import time
 
-# kolko = sys.argv[1]
-kolko = 500
-
-# print(sys.argv[1])
-# print(sys.argv[2])
-LifeforceName = "VividCrystallisedLifeforce"
+Quant = sys.argv[1]
+LifeforceName =  sys.argv[2]
 
 if LifeforceName == "WildCrystallisedLifeforce" :
     print("wildworks11111")
@@ -16,7 +12,7 @@ if LifeforceName == "WildCrystallisedLifeforce" :
     pyautogui.click(180,720)
     pyautogui.keyUp("shift")
     time.sleep(0.3)
-    pyautogui.write(str(kolko))
+    pyautogui.write(str(Quant))
     time.sleep(0.3)
     pyautogui.press("enter")
     time.sleep(0.2)
@@ -30,7 +26,7 @@ if LifeforceName == "VividCrystallisedLifeforce" :
     pyautogui.click(260,720)
     pyautogui.keyUp("shift")
     time.sleep(0.3)
-    pyautogui.write(str(kolko))
+    pyautogui.write(str(Quant))
     time.sleep(0.3)
     pyautogui.press("enter")
     time.sleep(0.2)
@@ -44,7 +40,7 @@ if LifeforceName == "PrimalCrystallisedLifeforce" :
     pyautogui.click(620,720)
     pyautogui.keyUp("shift")
     time.sleep(0.3)
-    pyautogui.write(str(kolko))
+    pyautogui.write(str(Quant))
     time.sleep(0.3)
     pyautogui.press("enter")
     time.sleep(0.2)

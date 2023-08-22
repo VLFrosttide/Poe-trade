@@ -10,3 +10,4 @@ pyautogui.click(550,200)
 pyautogui.click(550,200)
 
 time.sleep(1)
+print("Life force tab opened")
