@@ -5,7 +5,7 @@ import pyautogui
 import math
 import cv2
 
-print( (sys.argv[1]))
+print( "this is sysargv1: "+ sys.argv[1], flush=True)
 values = sys.argv[2]
 values = list(map(float, values.split()))
 Div =  float(sys.argv[1])

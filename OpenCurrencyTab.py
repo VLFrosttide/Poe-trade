@@ -4,5 +4,4 @@ import time
 pyautogui.moveTo(994,157)
 pyautogui.click(994,157)
 pyautogui.click(994,157)
-print("awed")
-sys.stdout.flush()
+print("awed", flush=True)

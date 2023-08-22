@@ -16,42 +16,48 @@ let ChaosOrb = new Currency({
   Quant: 10,
   MinQuant: 50,
   MaxQuant: 1000,
-  Name: "Chaos Orb",
+  Name: "ChaosOrb",
+  Price: 1,
 });
 let DivineOrb = new Currency({
   Base: 10,
   Quant: 0,
   MinQuant: 5,
   MaxQuant: 10,
-  Name: "Divine Orb",
+  Name: "DivineOrb",
+  Price: 100,
 });
 let ExaltedOrb = new Currency({
   Base: 10,
   Quant: 2,
   MinQuant: 5,
   MaxQuant: 15,
-  Name: "Exalted Orb",
+  Name: "ExaltedOrb",
+  Price: 10,
 });
-let AnnulOrb = new Currency({
+let AnnulmentOrb = new Currency({
   Base: 20,
   Quant: 1,
   MinQuant: 5,
   MaxQuant: 25,
-  Name: "Orb of Annulment",
+  Name: "OrbofAnnulment",
+  Price: 7,
 });
 let AlterationOrb = new Currency({
   Base: 20,
   Quant: 447,
   MinQuant: 200,
   MaxQuant: 2000,
-  Name: "Alteration Orb",
+  Name: "OrbofAlteration",
+  Price: 0.3,
 });
 let UnmakingOrb = new Currency({
   Base: 40,
   Quant: 1,
   MinQuant: 10,
   MaxQuant: 150,
-  Name: "Orb of Unmaking",
+  Name: "OrbofUnmaking",
+  Price: 2,
 });
 
 let CurrencyList = {
@@ -62,5 +68,4 @@ let CurrencyList = {
   AnnulOrb,
   UnmakingOrb,
 };
-console.log(CurrencyList);
 module.exports = CurrencyList;
