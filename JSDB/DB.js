@@ -35,7 +35,7 @@ let ExaltedOrb = new Currency({
   Name: "ExaltedOrb",
   Price: 10,
 });
-let AnnulmentOrb = new Currency({
+let OrbofAnnulment = new Currency({
   Base: 20,
   Quant: 1,
   MinQuant: 5,
@@ -43,7 +43,7 @@ let AnnulmentOrb = new Currency({
   Name: "OrbofAnnulment",
   Price: 7,
 });
-let AlterationOrb = new Currency({
+let OrbofAlteration = new Currency({
   Base: 20,
   Quant: 447,
   MinQuant: 200,
@@ -51,7 +51,7 @@ let AlterationOrb = new Currency({
   Name: "OrbofAlteration",
   Price: 0.3,
 });
-let UnmakingOrb = new Currency({
+let OrbofUnmaking = new Currency({
   Base: 40,
   Quant: 1,
   MinQuant: 10,
@@ -64,8 +64,8 @@ let CurrencyList = {
   ChaosOrb,
   DivineOrb,
   ExaltedOrb,
-  AlterationOrb,
-  AnnulOrb,
-  UnmakingOrb,
+  OrbofAlteration,
+  OrbofAnnulment,
+  OrbofUnmaking,
 };
 module.exports = CurrencyList;
