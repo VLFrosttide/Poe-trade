@@ -7,9 +7,38 @@ const { resolve } = require("path");
 const { type } = require("os");
 const { trace, error } = require("console");
 const { Invite } = require("discord.js");
-const CurrencyList = require("C:/Users/shacx/Documents/GitHub/Poe-trade/JSDB/DB");
+const fs = require("fs");
+const CurrencyPriceList = require("./DB.js");
+const { stderr } = require("process");
 
-// console.log(CurrencyList.ChaosOrb);
+// console.log(CurrencyPriceList.ChaosOrb);
+const GetCurrencyPrice_ = spawn("node", ["GetPrice.js"]);
+
+GetCurrencyPrice_.stdout.on("data", (data) => {
+  let NewData = data.toString();
+  let CurrencyPriceList = JSON.parse(NewData);
+  CurrencyPriceList.ChaosOrb = {
+    Base: 20,
+    Quant: 10,
+    MinQuant: 50,
+    MaxQuant: 500,
+    Name: "ChaosOrb",
+    Price: `1/${CurrencyPriceList.DivineOrb.Price}`,
+  };
+  console.log(CurrencyPriceList);
+});
+
+GetCurrencyPrice_.stderr.on("data", (data) => {
+  console.error(`Error: ${data}`);
+});
+
+GetCurrencyPrice_.on("close", (code) => {
+  if (code === 0) {
+    console.log("Price updated");
+  } else {
+    console.error(`Child process exited with code ${code}`);
+  }
+});
 
 let poeLog = new PathOfExileLog({
   logfile: "D:/logs/client.txt",
@@ -95,23 +124,6 @@ function CompareCurrency(Quant, Type) {
 }
 //#endregion
 //#region Lists
-// let CurrencyList = {
-//   Exalt: { name: "Exalted Orb", base: 10, price: 30 },
-//   Divine: { name: "Divine Orb", base: 10, price: 275 },
-//   Annul: { name: "Orb of Annulment", base: 20, price: 8 },
-//   Alt: { name: "Orb of Alteration", base: 20, price: 0.083 },
-//   Regal: { name: "Regal Orb", base: 10, price: 1 },
-//   Scour: { name: "Orb of Scouring", base: 30, price: 1 },
-//   Unmaking: { name: "Orb of Unmaking", base: 40, price: 1 },
-//   AncientOrb: { name: "Ancient Orb", base: 20, price: 1 },
-//   VeiledChaos: { name: "Veiled Chaos Orb", base: 10, price: 1 },
-//   VaalOrb: { name: "Vaal Orb", base: 10, price: 1 },
-//   Chromatic: { name: "Chromatic Orb", base: 20, price: 1 },
-//   Sextant: { name: "Awakened Sextant", base: 10, price: 1 },
-//   Alch: { name: "Orb of Alchemy", base: 10, price: 1 },
-//   Fusing: { name: "Orb of Fusing", base: 20, price: 1 },
-//   Regret: { name: "Orb of Regret", base: 40, price: 1 },
-// };
 
 let EssenceList = {
   Greed: { name: "Deafening Essence of Greed", price: 1 },
@@ -169,17 +181,17 @@ function FilterMsg() {
   OfferQuant = OfferQ[0].match(/\d+/g);
   CompareOfferQuant = OfferQuant[0];
   if (OfferCurrencyType.includes("Divine")) {
-    CompareOfferQuant = CompareOfferQuant / CurrencyList.Divine.price;
+    CompareOfferQuant = CompareOfferQuant / CurrencyPriceList.DivineOrb.price;
   }
 
   if (OfferCurrencyType.trim() == "Div") {
     OfferCurrencyType = "Divine Orb";
-    OfferQuant = [OfferQuant[0] * CurrencyList.Divine.price];
+    OfferQuant = [OfferQuant[0] * CurrencyPriceList.DivineOrb.price];
   }
   if (ReqCurrencyType.includes("Orb") || ReqCurrencyType.includes("Sextant")) {
-    for (const keys in CurrencyList) {
-      if (CurrencyList[keys]["Name"] == CurrencyMatch) {
-        ComparePrice = CurrencyList[keys]["price"];
+    for (const keys in CurrencyPriceList) {
+      if (CurrencyPriceList[keys]["Name"] == CurrencyMatch) {
+        ComparePrice = CurrencyPriceList[keys]["price"];
       } else if (CurrencyMatch.includes("Chaos")) {
         ComparePrice = 1;
       }
@@ -472,22 +484,25 @@ function GetCurrencyPrice() {
       PriceData = data.toString().replaceAll("'", '"');
       let Str = JSON.parse(PriceData);
       console.log("this is str ", JSON.parse(PriceData));
-      for (const keys in CurrencyList) {
-        console.log("this is KeysName", Str[CurrencyList[keys]["Name"]]);
+      for (const keys in CurrencyPriceList) {
+        console.log("this is KeysName", Str[CurrencyPriceList[keys]["Name"]]);
         // console.log("this is keys price");
-        if (CurrencyList[keys]["Price"] == Str[CurrencyList[keys]["Name"]]) {
+        if (
+          CurrencyPriceList[keys]["Price"] ==
+          Str[CurrencyPriceList[keys]["Name"]]
+        ) {
           CurrencyPriceStr = CurrencyPriceStr + "0 ";
         } else {
           CurrencyPriceStr = CurrencyPriceStr + "1 ";
         }
-        CurrencyList[keys]["Price"] = Str[CurrencyList[keys]["name"]];
+        CurrencyPriceList[keys]["Price"] = Str[CurrencyPriceList[keys]["name"]];
       }
 
       try {
-        console.log("Divine Price = " + CurrencyList.DivineOrb.Price);
+        console.log("Divine Price = " + CurrencyPriceList.DivineOrb.Price);
         const SetCurrencyPrices = spawn("python", [
           "C:/Users/shacx/Documents/GitHub/Poe-trade/SetCurrencyPrice.py",
-          CurrencyList.DivineOrb.Price,
+          CurrencyPriceList.DivineOrb.Price,
           CurrencyPriceStr,
         ]);
 
@@ -559,9 +574,9 @@ function GetEssence() {
     });
   });
 }
-setTimeout(() => {
-  GetEssence();
-}, 2000);
+// setTimeout(() => {
+//   GetEssence();
+// }, 2000);
 
 // setInterval(() => {
 //   GetEssence();

@@ -1,13 +1,15 @@
 const fs = require("fs");
 const CurrencyList = require("./DB"); // Use relative path
 const Fraction = require("fraction.js");
-
+let NewName;
+let NewPrice;
+console.clear();
 function RoundUp(number, decimalPlaces) {
   const multiplier = Math.pow(10, decimalPlaces);
   return Math.ceil(number * multiplier) / multiplier;
 }
 
-ClassList = {};
+let ClassList = {};
 fetch(
   "https://poe.ninja/api/data/currencyoverview?league=Ancestor&type=Currency"
 )
@@ -29,22 +31,14 @@ fetch(
       let ClassListItem = ClassList[Item].Name;
 
       if (CurrencyList.hasOwnProperty(ClassListItem)) {
-        console.log(
-          ClassList[Item].Name + " New Price " + ClassList[Item].Price
-        );
-        console.log(
-          CurrencyList[ClassListItem].Name +
-            " Old Price " +
-            CurrencyList[ClassListItem].Price
-        );
-
         CurrencyList[ClassListItem].Price = ClassList[Item].Price;
       }
     }
     let DivPrice = CurrencyList.DivineOrb.Price;
-    let ChaosPrice = `1/${DivPrice}`;
-    CurrencyList.ChaosOrb.Price = ChaosPrice;
+    // let ChaosPrice = `1/${DivPrice}`;
+    // CurrencyList.ChaosOrb.Price = ChaosPrice;
     let AltPrice = CurrencyList.OrbofAlteration.Price;
+    let UnmakingPrice;
     AltPrice = Math.ceil(1 / AltPrice);
     AltPrice = AltPrice * DivPrice;
     AltPrice = `1/${AltPrice}`;
@@ -53,6 +47,5 @@ fetch(
     UnmakingPrice = Math.floor(DivPrice / UnmakingPrice);
     UnmakingPrice = `1/${UnmakingPrice}`;
     CurrencyList.OrbofUnmaking.Price = UnmakingPrice;
-
-    console.log(CurrencyList.OrbofUnmaking.Price);
+    console.log(JSON.stringify(CurrencyList));
   });
