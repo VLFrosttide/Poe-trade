@@ -1,7 +1,7 @@
 let NewName;
 let NewPrice;
 const mysql = require("mysql");
-console.log("This the arg " + process.argv[2]);
+console.log("This the arg " + process.argv[2]); // Just checking how args are passed
 const con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -92,6 +92,7 @@ fetch(
     let DivPrice = CurrencyList.DivineOrb.Price;
     let AltPrice = CurrencyList.OrbofAlteration.Price;
     let UnmakingPrice;
+    console.log("This is alt price: ", AltPrice);
     AltPrice = Math.ceil(1 / AltPrice);
     AltPrice = AltPrice * DivPrice;
     AltPrice = `1/${AltPrice}`;
@@ -108,8 +109,6 @@ fetch(
       Name: "ChaosOrb",
       Price: `1/${CurrencyList.DivineOrb.Price}`,
     };
-    // Prices are string
-    // console.log(CurrencyList);
     for (const Item in CurrencyList) {
       con.query(
         `UPDATE currency 

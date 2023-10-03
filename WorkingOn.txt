@@ -1,0 +1,1 @@
+Query the DB, get a list of  all  currencies, make sure to keep list updated 

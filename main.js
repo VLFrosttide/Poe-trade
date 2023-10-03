@@ -1,4 +1,5 @@
 "use strict";
+// start project with nodemon  main.js
 const path = require("path");
 const { spawn } = require("child_process");
 const PathOfExileLog = require("poe-log-monitor");
@@ -12,27 +13,51 @@ const fs = require("fs");
 const { stderr } = require("process");
 const mysql = require("mysql");
 
-const GetCurrencyPrice_ = spawn("node", ["GetCurrencyPrice.js", "kiro"]);
+const GetCurrencyPrice_ = spawn("node", ["GetCurrencyPrice.js", "kiro"]); // kiro just to check how args are passed
 const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
   database: "poetrade",
 });
+
+function GetDateTime() {
+  let DateTime = new Date();
+  DateTime = DateTime.toLocaleString({ hour12: false });
+  return DateTime;
+}
+console.log(GetDateTime());
 con.connect();
-con.query(` 
-CREATE TABLE IF NOT EXISTS \`Trades_${DATE_FORMAT(NOW(), "%Y_%m_%d")}\` (
+con.query(
+  `
+CREATE TABLE IF NOT EXISTS \`Trades\` (
   \`TradeId\` INT AUTO_INCREMENT,
-  \`TradeType\` VARCHAR(30),
+  \`TradeDateTime\` VARCHAR(60),
   \`FromMe\` VARCHAR(40),
   \`FromCustomer\` VARCHAR(40),
   PRIMARY KEY (\`TradeId\`)
 )
 
-`);
+`,
+  (err, results) => {
+    if (err) {
+      console.error("Error is: ", err);
+    } else {
+      console.log("Tables created: ", results);
+    }
+  }
+);
+
 GetCurrencyPrice_.stdout.on("data", (data) => {
   let NewData = data.toString();
   console.log(NewData);
+  // con.query(`SELECT * FROM currency`, (err, results) => {
+  //   if (err) {
+  //     console.error("Error is: ", err);
+  //   } else {
+  //     console.log("Results: ", results);
+  //   }
+  // });
   // let CurrencyPriceList = JSON.parse(NewData);
   // console.log(CurrencyPriceList);
   // const CurrencyTabOpener = OpenCurrencyTab();
@@ -181,7 +206,6 @@ function FilterMsg() {
     let split = mes[i].split("your");
     namearray.push(split[1]);
   }
-  // console.log(namearray);
   for (let i = 0; i < namearray.length; i++) {
     let split2 = namearray[i].split("for my");
     RequestPoe.push(split2[0]);
@@ -423,6 +447,10 @@ poeLog.on("trade", (trade) => {
     console.log("Queue length:", Queue.length);
   }
   if (trade.accepted == true) {
+    con.query(
+      `INSERT INTO Trades (TradeDateTime, FromMe, FromCustomer) VALUES ('${GetDateTime()}', 'Div',  'chaos')`
+    );
+
     const OpenStash = spawn("python", [
       "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenStash.py",
     ]);
