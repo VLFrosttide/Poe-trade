@@ -8,24 +8,35 @@ const { type } = require("os");
 const { trace, error } = require("console");
 const { Invite } = require("discord.js");
 const fs = require("fs");
-const CurrencyPriceList = require("./DB.js");
+// const CurrencyPriceList = require("GetCurrencyPrice.js");
 const { stderr } = require("process");
+const mysql = require("mysql");
 
-// console.log(CurrencyPriceList.ChaosOrb);
-const GetCurrencyPrice_ = spawn("node", ["GetPrice.js"]);
+const GetCurrencyPrice_ = spawn("node", ["GetCurrencyPrice.js", "kiro"]);
+const con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "poetrade",
+});
+con.connect();
+con.query(` 
+CREATE TABLE IF NOT EXISTS \`Trades_${DATE_FORMAT(NOW(), "%Y_%m_%d")}\` (
+  \`TradeId\` INT AUTO_INCREMENT,
+  \`TradeType\` VARCHAR(30),
+  \`FromMe\` VARCHAR(40),
+  \`FromCustomer\` VARCHAR(40),
+  PRIMARY KEY (\`TradeId\`)
+)
 
+`);
 GetCurrencyPrice_.stdout.on("data", (data) => {
   let NewData = data.toString();
-  let CurrencyPriceList = JSON.parse(NewData);
-  CurrencyPriceList.ChaosOrb = {
-    Base: 20,
-    Quant: 10,
-    MinQuant: 50,
-    MaxQuant: 500,
-    Name: "ChaosOrb",
-    Price: `1/${CurrencyPriceList.DivineOrb.Price}`,
-  };
-  console.log(CurrencyPriceList);
+  console.log(NewData);
+  // let CurrencyPriceList = JSON.parse(NewData);
+  // console.log(CurrencyPriceList);
+  // const CurrencyTabOpener = OpenCurrencyTab();
+  // CurrencyTabOpener.CurrencyTabStdout((data) => {});
 });
 
 GetCurrencyPrice_.stderr.on("data", (data) => {
@@ -102,7 +113,15 @@ function TradeInvite(Name) {
   };
   return { Invite, InviteOnStdOut };
 }
-
+function OpenCurrencyTab() {
+  const OpenTab = spawn("python", [
+    "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenCurrencyTab.py",
+  ]);
+  const CurrencyTabStdout = (callback) => {
+    OpenTab.stdout.on("data", callback);
+  };
+  return { OpenTab, CurrencyTab };
+}
 function TradeIdentification() {
   const TradeId = spawn("python", [
     "C:/Users/shacx/Documents/GitHub/Poe-trade/TradeIdentifier.py",
@@ -221,9 +240,6 @@ function FilterMsg() {
     //#region Currency
     if (ReqCurrencyType.includes("Orb") || ReqCurrencyType.includes("Sex")) {
       console.log("currency");
-      const OpenCurrencyTab = spawn("python", [
-        "C:/Users/shacx/Documents/GitHub/Poe-trade/OpenCurrencyTab.py",
-      ]);
       const GetCurrency = spawn("python", [
         "C:/Users/shacx/Documents/GitHub/Poe-trade/GetCurrency.py",
         ReqQuant,
@@ -393,43 +409,6 @@ poeLog.on("areaJoin", (area) => {
         });
       }
     });
-
-    // TradeIdentification.InviteOnStdOut((data) => {
-
-    //   Tradeid.TradeIdOnStdOut((data) => {-p
-
-    //     }
-    //   });
-    // });
-
-    //If its opened , send items from inventory to the trade window.
-    // TradeId.stdout.on("data", (data) => {});
-    //#region Useless code
-    // const Compare = spawn("python", [
-    //   "C:/Users/shacx/Documents/GitHub/Poe-trade/Compare.py",
-    //   CompareOfferQuant,
-    //   OfferCurrencyType.replace(/\s/g, ""),
-    // ]);
-
-    // If comparison is true , accept the offer
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Compare.stdout.on("data", (data) => {
-    //   console.log("Compare data:" + data.toString());
-    //   if (data.toString().includes("True")) {
-    //     setTimeout(() => {
-    //       const AcceptOffer = spawn("python", [
-    //         "C:/Users/shacx/Documents/GitHub/Poe-trade/AcceptOffer.py",
-    //       ]);
-    //     }, 200);
-
-    //     // Otherwise cancel the offer
-    //   } else {
-    //     const CancelOffer = spawn("python", [
-    //       "C:/Users/shacx/Documents/GitHub/Poe-trade/CancelOffer.py",
-    //     ]);
-    //   }
-    // });
-    //#endregion
   }
 });
 
@@ -474,13 +453,13 @@ function GetCurrencyPrice() {
 
   OpenCurrencyTab2.stdout.on("data", (data) => {
     console.log("Currency running", data.toString());
-    const GetPrices = spawn("python", [
+    const GetCurrencyPrices = spawn("python", [
       "-u",
       "C:/Users/shacx/Documents/GitHub/Poe-trade/Pricing.py",
       "Currency",
     ]);
 
-    GetPrices.stdout.on("data", (data) => {
+    GetCurrencyPrices.stdout.on("data", (data) => {
       PriceData = data.toString().replaceAll("'", '"');
       let Str = JSON.parse(PriceData);
       console.log("this is str ", JSON.parse(PriceData));
@@ -548,11 +527,6 @@ function GetEssence() {
           Pricestr = Pricestr + "1 ";
         }
 
-        // console.log(
-        //   EssenceList[keys]["name"],
-        //   EssenceStr[EssenceList[keys]["name"]],
-        //   Math.ceil(EssenceStr[EssenceList[keys]["name"]] + 1)
-        // );
         EssenceList[keys]["price"] = Math.ceil(
           EssenceStr[EssenceList[keys]["name"]] + 1
         );
@@ -574,12 +548,4 @@ function GetEssence() {
     });
   });
 }
-// setTimeout(() => {
-//   GetEssence();
-// }, 2000);
-
-// setInterval(() => {
-//   GetEssence();
-// }, 600000);
-
 //#endregion
