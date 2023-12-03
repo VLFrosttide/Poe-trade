@@ -1,0 +1,23 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+model Currency{
+    Name    String        @unique
+    Base    Int
+    CurrentStock  Int
+    MinStock Int
+    MaxStock Int
+    Price   String
+}
+model Trades{
+    TradeID    Int  @id @default(autoincrement())
+    TradeTime  String
+    TradeType  String
+    FromMe     String
+    FromCustomer String
+}

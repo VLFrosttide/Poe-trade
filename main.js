@@ -13,7 +13,10 @@ const fs = require("fs");
 const { stderr } = require("process");
 const mysql = require("mysql");
 
-const GetCurrencyPrice_ = spawn("node", ["GetCurrencyPrice.js", "kiro"]); // kiro just to check how args are passed
+const GetCurrencyPrice_ = spawn("node", [
+  "GetStuff/GetCurrencyPrice.js",
+  "kiro",
+]); // kiro just to check how args are passed
 const con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -28,25 +31,25 @@ function GetDateTime() {
 }
 console.log(GetDateTime());
 con.connect();
-con.query(
-  `
-CREATE TABLE IF NOT EXISTS \`Trades\` (
-  \`TradeId\` INT AUTO_INCREMENT,
-  \`TradeDateTime\` VARCHAR(60),
-  \`FromMe\` VARCHAR(40),
-  \`FromCustomer\` VARCHAR(40),
-  PRIMARY KEY (\`TradeId\`)
-)
+// con.query(
+//   `
+// CREATE TABLE IF NOT EXISTS \`Trades\` (
+//   \`TradeId\` INT AUTO_INCREMENT,
+//   \`TradeDateTime\` VARCHAR(60),
+//   \`FromMe\` VARCHAR(40),
+//   \`FromCustomer\` VARCHAR(40),
+//   PRIMARY KEY (\`TradeId\`)
+// )
 
-`,
-  (err, results) => {
-    if (err) {
-      console.error("Error is: ", err);
-    } else {
-      console.log("Tables created: ", results);
-    }
-  }
-);
+// `,
+//   (err, results) => {
+//     if (err) {
+//       console.error("Error is: ", err);
+//     } else {
+//       console.log("Tables created: ", results);
+//     }
+//   }
+// );
 
 GetCurrencyPrice_.stdout.on("data", (data) => {
   let NewData = data.toString();
@@ -561,7 +564,7 @@ function GetEssence() {
       }
       const SetEssencePrice = spawn("python", [
         "-u",
-        "C:/Users/shacx/Documents/GitHub/Poe-trade/SetEssencePrice.py",
+        "C:/Users/shacx/Documents/GitHub/Poe-trade/SetPrice/SetEssencePrice.py",
         Pricestr,
       ]);
       SetEssencePrice.stdout.on("data", (data) => {
